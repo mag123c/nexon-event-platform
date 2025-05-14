@@ -1,29 +1,32 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "target": "ES2023",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2023",
+    "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
+    "strict": true,
     "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": true,
+    "importsNotUsedAsValues": "remove",
+    "types": ["reflect-metadata", "jest"],
     "paths": {
-      "@app/common": [
-        "libs/common/src"
-      ],
-      "@app/common/*": [
-        "libs/common/src/*"
-      ]
+      // libs
+      "@app/common": ["libs/common/src"],
+      "@app/common/*": ["libs/common/src/*"],
+
+      // apps
+      "@app/gateway/*": ["apps/gateway/src/*"],
+      "@app/auth/*": ["apps/auth/src/*"],
+      "@app/events/*": ["apps/events/src/*"]
     }
   }
 }
