@@ -17,7 +17,7 @@
     "strictNullChecks": true,
     "noImplicitAny": true,
     "importsNotUsedAsValues": "remove",
-    "types": ["reflect-metadata", "jest"],
+    "types": ["reflect-metadata", "jest", "node"],
     "paths": {
       // libs
       "@app/common": ["libs/common/src"],
