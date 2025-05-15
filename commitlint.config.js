@@ -4,7 +4,7 @@ module.exports = {
       2,
       'always',
       [
-        'feat', 'fix', 'docs', 'chore',
+        'feat', 'fix', 'docs', 'chore', 'move',
         'remove', 'refactor', 'add', 'test', 'init'
       ],
     ],
