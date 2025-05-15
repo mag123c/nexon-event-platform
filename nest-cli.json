@@ -7,6 +7,16 @@
     "deleteOutDir": true,
     "webpack": true
   },
+  "plugins": [
+    {
+      "name": "@nestjs/swagger",
+      "options": {
+        "classValidatorShim": true,
+        "introspectComments": true,
+        "dtoFileNameSuffix": [".dto.ts"]
+      }
+    }
+  ],
   "projects": {
     "auth": {
       "type": "application",

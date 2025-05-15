@@ -36,7 +36,6 @@ export class RegisterUserUseCase {
     const newUser = new User();
     newUser.email = input.email;
     newUser.password = hashedPassword;
-    // ...
 
     try {
       return await this.userRepository.save(newUser);

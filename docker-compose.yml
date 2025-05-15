@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+    container_name: auth_service
+    working_dir: /usr/src/app
+    ports:
+      - '${AUTH_PORT}:${AUTH_PORT}'
+    env_file:
+      - .env
+    volumes:
+      - ./apps/auth/src:/usr/src/app/apps/auth/src
+      - ./libs/common/src:/usr/src/app/libs/common/src
+      - /usr/src/app/node_modules
+    depends_on:
+      - auth_mongo
+    networks:
+      - app_network
+    command: npm run start:dev:auth
+
+  auth_mongo:
+    image: mongo:latest
+    container_name: auth_mongodb
+    ports:
+      - '27018:27017'
+    volumes:
+      - auth_mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: auth_db
+    networks:
+      - app_network
+
+  # gateway:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/gateway/Dockerfile
+  #   container_name: gateway_service
+  #   ports:
+  #     - "${GATEWAY_PORT}:${GATEWAY_PORT}"
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     # - ./apps/gateway/src:/usr/src/app/apps/gateway/src
+  #     # - ./libs/common/src:/usr/src/app/libs/common/src
+  #     - /usr/src/app/node_modules
+  #   depends_on:
+  #     - auth
+  #     - events
+  #   networks:
+  #     - app_network
+
+  # events:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/events/Dockerfile
+  #   container_name: events_service
+  #   ports:
+  #     - "${EVENTS_PORT}:${EVENTS_PORT}"
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     # - ./apps/events/src:/usr/src/app/apps/events/src
+  #     # - ./libs/common/src:/usr/src/app/libs/common/src
+  #     - /usr/src/app/node_modules
+  #   depends_on:
+  #     - events_mongo # events_mongo 서비스가 먼저 시작되도록
+  #   networks:
+  #     - app_network
+
+  # events_mongo:
+  #   image: mongo:latest
+  #   container_name: events_mongodb
+  #   ports:
+  #     - "27019:27017"
+  #   volumes:
+  #     - events_mongo_data:/data/db
+  #   environment:
+  #     MONGO_INITDB_DATABASE: events_db
+  #   networks:
+  #     - app_network
+
+volumes:
+  auth_mongo_data:
+  # events_mongo_data:
+
+networks:
+  app_network:
+    driver: bridge

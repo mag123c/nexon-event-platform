@@ -23,16 +23,16 @@ export type UserDocument = User & Document;
   collection: 'users',
   toJSON: {
     virtuals: true,
-    transform: (doc, ret) => {
-      delete ret.passwordHash;
+    transform: (_doc, ret) => {
+      delete ret.password;
       delete ret.__v;
       return ret;
     },
   },
   toObject: {
     virtuals: true,
-    transform: (doc, ret) => {
-      delete ret.passwordHash;
+    transform: (_doc, ret) => {
+      delete ret.password;
       delete ret.__v;
       return ret;
     },
@@ -64,10 +64,7 @@ export class User {
   @Prop({ type: UserActivityDataSchema, default: () => ({}) })
   activityData?: UserActivityData;
 
-  @Prop({ required: true, trim: true, timestamp: true })
   createdAt!: Date;
-
-  @Prop({ required: false, trim: true })
   updatedAt?: Date;
 }
 

@@ -5,15 +5,5 @@
     "outDir": "../../dist/libs/common"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"],
-  "plugins": [
-    {
-      "name": "@nestjs/swagger",
-      "options": {
-        "classValidatorShim": true,
-        "introspectComments": true,
-        "dtoFileNameSuffix": [".dto.ts"]
-      }
-    }
-  ]
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }

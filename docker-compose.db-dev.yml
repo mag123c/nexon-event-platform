@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  auth_mongo_dev:
+    image: mongo:latest
+    container_name: auth_db_dev_container
+    ports:
+      - '27017:27017'
+    volumes:
+      - auth_mongo_dev_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: auth_db_dev
+    networks:
+      - dev_network
+
+volumes:
+  auth_mongo_dev_data:
+
+networks:
+  dev_network:
+    driver: bridge

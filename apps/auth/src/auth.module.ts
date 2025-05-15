@@ -9,15 +9,19 @@ import { Argon2Service } from '@app/auth/infrastructure/hasing/argon2.service';
 import { User, UserSchema } from '@app/auth/domain/entities/user.entity';
 import { CommonMongooseModule } from '@app/common/database/moongoose/common-mongoose.module';
 import { CommonConfigModule } from '@app/common/config/common-config.module';
+import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conneciton.token';
 
 @Module({
   imports: [
     CommonConfigModule,
     CommonMongooseModule.forRootAsync({
       configKey: 'AUTH_MONGODB_URI',
-      connectionName: 'auth',
+      connectionName: MONGO_CONNECTIONS.AUTH,
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature(
+      [{ name: User.name, schema: UserSchema }],
+      MONGO_CONNECTIONS.AUTH,
+    ),
   ],
   controllers: [AuthController],
   providers: [
