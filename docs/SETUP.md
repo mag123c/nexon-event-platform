@@ -18,6 +18,7 @@ libs/
 .husky/           # 커밋 전 검사 Hook
 ```
 
+- 추가적인 프로젝트 디렉토리 구조에 관한 설명은 [architecture.md](./architecture.md)를 참조해주세요.
 --- 
 
 ## ⚙️ 품질 관리

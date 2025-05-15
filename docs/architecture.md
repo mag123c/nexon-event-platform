@@ -1,6 +1,6 @@
-# 🔧 최초 설계 구조 (Initial Architecture Draft)
+# 🔧 설계 구조 (Initial Architecture Draft)
 
-서비스의 구성 요소를 구상할 때 다음과 같은 구조로 출발했습니다:
+서비스의 구성 요소를 구상할 때 요구사항에 따라 다음과 같은 구조로 시각화하면서 출발했습니다:
 
 ![Initial Architecture Diagram](./assets/architecture-initial.png)
 
