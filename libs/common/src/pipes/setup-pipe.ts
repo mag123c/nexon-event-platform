@@ -1,4 +1,4 @@
-import { isDevelopment, isTest } from 'libs/common/utils/env';
+import { isDevelopment, isTest } from '@app/common/utils/env';
 import type { INestApplication } from '@nestjs/common';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 

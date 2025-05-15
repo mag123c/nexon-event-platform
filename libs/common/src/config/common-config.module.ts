@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { isProduction } from 'libs/common/utils/env';
+import { isProduction } from '@app/common/utils/env';
 
 const envFilePath = isProduction() ? '.env' : '.env.development';
 

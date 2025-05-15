@@ -1,8 +1,8 @@
-export * from './pipes/setup-pipe';
-export * from './interceptors/logging.interceptor';
-export * from './filters/http-exception.filter';
-export * from './utils/env';
-export * from './errors/base.error';
-export * from './errors/auth.exception';
+export * from './src/pipes/setup-pipe';
+export * from './src/interceptors/logging.interceptor';
+export * from './src/filters/http-exception.filter';
+export * from './src/utils/env';
+export * from './src/errors/base.error';
+export * from './src/errors/auth.exception';
 
-export { setupSwagger, swaggerConfig } from './swagger/setup-swagger';
+export { setupSwagger, swaggerConfig } from './src/swagger/setup-swagger';

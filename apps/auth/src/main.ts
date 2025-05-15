@@ -6,7 +6,7 @@ import {
   LoggingInterceptor,
   setupPipe,
   setupSwagger,
-} from 'libs/common';
+} from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AuthModule, {

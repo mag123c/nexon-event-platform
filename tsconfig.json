@@ -20,7 +20,7 @@
     "types": ["reflect-metadata", "jest", "node"],
     "paths": {
       // libs
-      "@app/common": ["libs/common/src"],
+      "@app/common": ["libs/common/src/index.ts"],
       "@app/common/*": ["libs/common/src/*"],
 
       // apps

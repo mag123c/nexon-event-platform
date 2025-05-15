@@ -8,7 +8,7 @@ import {
   UserRepository,
 } from '@app/auth/domain/ports/user.repository';
 import { Injectable, Inject } from '@nestjs/common';
-import { DatabaseOperationException } from 'libs/common/errors/database-operation.exception';
+import { DatabaseOperationException } from '@app/common/errors/database-operation.exception';
 
 @Injectable()
 export class RegisterUserUseCase {

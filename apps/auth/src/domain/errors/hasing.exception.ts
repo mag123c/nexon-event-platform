@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { BaseError } from 'libs/common';
+import { BaseError } from '@app/common';
 
 export class HashingException extends BaseError {
   constructor(

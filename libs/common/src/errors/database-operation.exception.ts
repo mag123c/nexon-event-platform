@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { BaseError } from 'libs/common/errors/base.error';
+import { BaseError } from '@app/common/errors/base.error';
 
 export class DatabaseOperationException extends BaseError {
   constructor(message: string = 'A database operation failed.', cause?: Error) {

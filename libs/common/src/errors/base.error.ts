@@ -1,8 +1,8 @@
-import { isProduction } from 'libs/common/utils/env';
+import { isProduction } from '@app/common/utils/env';
 
 export abstract class BaseError extends Error {
   constructor(
-    public readonly status: number,
+    public readonly statusCode: number,
     public readonly message: string,
     public readonly extra?: Record<string, any>,
     public readonly logLevel: 'warn' | 'error' = 'error',
