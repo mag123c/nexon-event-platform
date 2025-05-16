@@ -4,7 +4,7 @@ import { ConfigType } from '@nestjs/config';
 import { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
 import { Request } from 'express';
 import { firstValueFrom } from 'rxjs';
-import gatewayConfig from '../../config/gateway.config';
+import gatewayConfig from '../../config/gateway-proxy.config';
 
 import { JwtPayload } from '@app/common/interfaces/jwt-payload.interface';
 import { BaseError } from '@app/common';

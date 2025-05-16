@@ -1,4 +1,4 @@
-import gatewayConfig from '@app/gateway/config/gateway.config';
+import gatewayConfig from '@app/gateway/config/gateway-proxy.config';
 import { ProxyRequestService } from '@app/gateway/proxy/services/proxy-request.service';
 import { Controller, All, Req, Res, Inject } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import gatewayConfig from '../config/gateway.config';
+import gatewayConfig from '../config/gateway-proxy.config';
 
 import { ProxyRequestService } from './services/proxy-request.service';
 import { AuthProxyController } from '@app/gateway/proxy/controllers/auth-proxy.controller';

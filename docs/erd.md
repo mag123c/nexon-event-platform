@@ -24,14 +24,13 @@
 | `password`     | `String`     | 비밀번호                                                                     |                            |
 | `roles`        | `[String]`   | 사용자 역할                                                                  |                            |
 | `refreshToken` | `String`     | 리프레시 토큰                                                                 |                           |
-| `activityData` | `Object`     | 이벤트 조건 검증에 필요한 사용자 활동 데이터 (Auth 서버가 관리하고 API로 제공)             | 구조는 아래 예시 참조          |
+| `activityData` | `Object`     | 이벤트 조건 검증에 필요한 사용자 활동 데이터 (Auth 서버가 관리함)                        | 구조는 아래 예시 참조          |
 | `createdAt`    | `Date`       | 생성 일시                                                                    |                           |
 | `updatedAt`    | `Date`       | 마지막 수정 일시                                                               |                           |
 
 **`activityData` 객체 구조 예시:**
 ```json
 {
-  "loginCount": 10,
   "lastLoginAt": "2024-07-10T14:30:00Z",
   "invitedFriendsCount": 3
 }
