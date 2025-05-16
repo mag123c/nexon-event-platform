@@ -9,6 +9,7 @@ import {
 } from '@app/auth/domain/ports/user.repository';
 import { Injectable, Inject } from '@nestjs/common';
 import { DatabaseOperationException } from '@app/common/errors/database-operation.exception';
+import { Role } from '@app/auth/domain/value-objects/role.vo';
 
 @Injectable()
 export class RegisterUserUseCase {
@@ -36,6 +37,8 @@ export class RegisterUserUseCase {
     const newUser = new User();
     newUser.email = input.email;
     newUser.password = hashedPassword;
+    newUser.roles =
+      input.roles && input.roles.length > 0 ? input.roles : [Role.USER];
 
     try {
       return await this.userRepository.save(newUser);

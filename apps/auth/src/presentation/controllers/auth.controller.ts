@@ -48,6 +48,7 @@ export class AuthController {
     const useCaseInput: RegisterUserInput = {
       email: registerUserRequestDto.email,
       password: registerUserRequestDto.password,
+      roles: registerUserRequestDto.roles,
     };
 
     const createdUserEntity: User =
