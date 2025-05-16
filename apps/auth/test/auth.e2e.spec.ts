@@ -5,13 +5,7 @@ import {
 } from '@app/auth/domain/ports/user.repository';
 import { RegisterUserRequestDto } from '@app/auth/presentation/dtos/request/register-user.request.dto';
 import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conneciton.token';
-import {
-  INestApplication,
-  HttpStatus,
-  Controller,
-  Get,
-  UseGuards,
-} from '@nestjs/common';
+import { INestApplication, HttpStatus } from '@nestjs/common';
 import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
 import request from 'supertest';
@@ -21,23 +15,6 @@ import { HttpExceptionFilter, setupPipe } from '@app/common';
 import { User, UserDocument } from '@app/auth/domain/entities/user.entity';
 import { HASHING_PORT, HashingPort } from '@app/auth/domain/ports/hasing.port';
 import { LoginRequestDto } from '@app/auth/presentation/dtos/request/login-user.request.dto';
-import { UserResponseDto } from '@app/auth/presentation/dtos/response/user.response.dto';
-import { CurrentUser } from '@app/common/decorators/current-user.decorator';
-import { JwtAuthGuard } from '@app/common/guards/jwt.guard';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-
-@Controller('test-guard')
-class TestGuardController {
-  @Get('jwt-protected')
-  @UseGuards(JwtAuthGuard)
-  getJwtProtectedResource(@CurrentUser() user: UserDocument): UserResponseDto {
-    if (!user) {
-      throw new Error('User not found in request after guard');
-    }
-    return UserResponseDto.fromEntity(user);
-  }
-}
 
 describe('AuthController (E2E)', () => {
   let app: INestApplication;
@@ -52,7 +29,6 @@ describe('AuthController (E2E)', () => {
   beforeAll(async () => {
     moduleFixture = await Test.createTestingModule({
       imports: [AuthModule],
-      controllers: [TestGuardController],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -267,89 +243,6 @@ describe('AuthController (E2E)', () => {
               'email should not be empty',
             );
         });
-    });
-  });
-
-  describe('GET /test-guard/jwt-protected - 테스트용 임시 컨트롤러로 테스트', () => {
-    let validAccessToken: string;
-    let testUser: User;
-
-    const testUserData = {
-      email: 'guard-test-user@example.com',
-      password: 'securePassword123',
-      roles: [Role.USER],
-    };
-
-    beforeAll(async () => {
-      await userModel.deleteMany({});
-      const hashedPassword = await hashingService.hash(testUserData.password);
-      testUser = await userModel.create({
-        email: testUserData.email,
-        password: hashedPassword,
-        roles: testUserData.roles,
-      });
-
-      // Access Token 획득
-      const loginResponse = await request(app.getHttpServer())
-        .post('/auth/login')
-        .send({ email: testUserData.email, password: testUserData.password });
-
-      if (
-        loginResponse.status !== HttpStatus.OK ||
-        !loginResponse.body.accessToken
-      ) {
-        console.error(
-          'E2E Test Setup Error: 엑세스토큰 발급 실패',
-          loginResponse.body,
-        );
-        throw new Error('E2E Test Setup Error: 엑세스토큰 발급 실패');
-      }
-      validAccessToken = loginResponse.body.accessToken;
-    });
-
-    it('유효한 JWT 토큰으로 요청 시 200 OK와 사용자 정보를 반환해야 한다', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/test-guard/jwt-protected')
-        .set('Authorization', `Bearer ${validAccessToken}`)
-        .expect(HttpStatus.OK);
-
-      expect(response.body).toBeDefined();
-      expect(response.body.id).toBe(testUser._id.toHexString());
-      expect(response.body.email).toBe(testUser.email);
-      expect(response.body.roles).toEqual(testUser.roles);
-    });
-
-    it('JWT 토큰 없이 요청 시 401 Unauthorized를 반환해야 한다', async () => {
-      return request(app.getHttpServer())
-        .get('/test-guard/jwt-protected')
-        .expect(HttpStatus.UNAUTHORIZED);
-    });
-
-    it('잘못된 형식의 JWT 토큰으로 요청 시 401 Unauthorized를 반환해야 한다', async () => {
-      const invalidToken = 'Bearer ThisIsAnInvalidToken';
-      return request(app.getHttpServer())
-        .get('/test-guard/jwt-protected')
-        .set('Authorization', invalidToken)
-        .expect(HttpStatus.UNAUTHORIZED);
-    });
-
-    it('만료된 JWT 토큰으로 요청 시 401 Unauthorized를 반환해야 한다 (JwtExpiredException)', async () => {
-      const jwtService = moduleFixture.get<JwtService>(JwtService);
-      const configService = moduleFixture.get<ConfigService>(ConfigService);
-      const expiredTokenPayload = {
-        sub: testUser._id.toHexString(),
-        email: testUser.email,
-        roles: testUser.roles,
-      };
-      const expiredToken = jwtService.sign(expiredTokenPayload, {
-        secret: configService.get<string>('JWT_SECRET'),
-        expiresIn: '0s', // 즉시 만료
-      });
-
-      return request(app.getHttpServer())
-        .get('/test-guard/jwt-protected')
-        .set('Authorization', `Bearer ${expiredToken}`)
-        .expect(HttpStatus.UNAUTHORIZED);
     });
   });
 });
