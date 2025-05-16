@@ -10,7 +10,7 @@
 apps/
   ├─ gateway/     # API 진입점, 인증, 권한 검사
   ├─ auth/        # 사용자, 역할, JWT 인증
-  └─ events/      # 이벤트 및 보상 도메인
+  └─ event/      # 이벤트 및 보상 도메인
 
 libs/
   └─ common/      # 공통 유틸, 예외, 데코레이터 등

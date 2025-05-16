@@ -36,13 +36,13 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
-    "events": {
+    "event": {
       "type": "application",
-      "root": "apps/events",
+      "root": "apps/event",
       "entryFile": "main",
-      "sourceRoot": "apps/events/src",
+      "sourceRoot": "apps/event/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/events/tsconfig.app.json"
+        "tsConfigPath": "apps/event/tsconfig.app.json"
       }
     },
     "gateway": {
