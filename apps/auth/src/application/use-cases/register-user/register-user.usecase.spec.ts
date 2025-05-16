@@ -1,4 +1,3 @@
-// apps/auth/src/application/use-cases/register-user/register-user.usecase.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { RegisterUserUseCase } from './register-user.usecase';
 import { RegisterUserInput } from './register-user.input';
@@ -16,8 +15,10 @@ import { DatabaseOperationException } from '@app/common/errors/database-operatio
 
 const mockUserRepository: jest.Mocked<UserRepository> = {
   findByEmail: jest.fn(),
+  findByEmailWithPassword: jest.fn(),
   findById: jest.fn(),
   save: jest.fn(),
+  updateUser: jest.fn(),
 };
 
 const mockHashingService: jest.Mocked<HashingPort> = {
