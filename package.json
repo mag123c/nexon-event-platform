@@ -18,7 +18,7 @@
     "start:prod:event": "node dist/apps/event/main",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "cross-env NODE_ENV=test jest --passWithNoTests",
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -89,7 +89,7 @@
       "<rootDir>/apps/",
       "<rootDir>/libs/"
     ],
-    "testRegex": ".*\\.spec\\.ts$",
+    "testRegex": ".*\\.(spec|e2e-spec)\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": [
         "ts-jest",

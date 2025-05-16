@@ -2,6 +2,7 @@ import type { INestApplication } from '@nestjs/common';
 import type { SwaggerCustomOptions } from '@nestjs/swagger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+// swaggerConfig 함수
 export const swaggerConfig = (title: string, description?: string) => {
   return new DocumentBuilder()
     .setTitle(title)
@@ -10,10 +11,22 @@ export const swaggerConfig = (title: string, description?: string) => {
       {
         type: 'http',
         scheme: 'bearer',
-        name: 'JWT',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
         in: 'header',
+        description: 'Access token for authorization',
       },
       'accessToken',
+    )
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'X-Internal-Api-Key',
+        in: 'header',
+        description:
+          'Gateway internal API Key for server-to-server communication.',
+      },
+      'internalApiKey',
     )
     .build();
 };

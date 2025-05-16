@@ -1,9 +1,9 @@
 import { UserDocument } from '@app/auth/domain/entities/user.entity';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
-import { CurrentUser } from '@app/common/decorators/current-user.decorator';
-import { Roles } from '@app/common/decorators/roles.decorator';
-import { JwtAuthGuard } from '@app/common/guards/jwt.guard';
-import { RolesGuard } from '@app/common/guards/role.guard';
+import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
+import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '@app/gateway/auth/guards/jwt.guard';
+import { RolesGuard } from '@app/gateway/auth/guards/role.guard';
 import { CreateEventInput } from '@app/event/application/use-cases/craete-event/craete-event.input';
 import { CreateEventUseCase } from '@app/event/application/use-cases/craete-event/create-event.usecase';
 import { CreateEventRequestDto } from '@app/event/presentation/dtos/request/event.request.dto';

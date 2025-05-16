@@ -3,7 +3,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'; // F
 import { Reflector } from '@nestjs/core';
 import { UserDocument } from '@app/auth/domain/entities/user.entity'; // 💡 UserDocument 타입 경로 확인
 import { Role } from '@app/auth/domain/value-objects/role.vo';
-import { ROLES_KEY } from '@app/common/decorators/roles.decorator';
+import { ROLES_KEY } from '@app/gateway/auth/decorators/roles.decorator';
 import { ForbiddenRoleException } from '@app/common/errors/auth.exception';
 
 @Injectable()

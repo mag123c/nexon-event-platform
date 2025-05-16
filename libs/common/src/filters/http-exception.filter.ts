@@ -25,38 +25,61 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: any = 'Internal Server Error';
-    let error = 'Internal Server Error';
+    let errorName = 'InternalServerError';
+    let responseBody: Record<string, any>;
 
     if (exception instanceof BaseError) {
+      responseBody = exception.toJSON();
       statusCode = exception.statusCode;
-      message = exception.message;
+      errorName = exception.constructor.name;
+      responseBody.statusCode = responseBody.statusCode ?? statusCode;
     } else if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
-      const response = exception.getResponse();
-      if (typeof response === 'string') {
-        message = response;
-      } else if (typeof response === 'object' && response !== null) {
-        message = (response as any).message;
-        error = (response as any).error ?? error;
+      const exResponse = exception.getResponse();
+      errorName = exception.constructor.name;
+
+      if (typeof exResponse === 'string') {
+        message = exResponse;
+      } else if (typeof exResponse === 'object' && exResponse !== null) {
+        message = (exResponse as any).message || exception.message;
+        errorName = (exResponse as any).error || errorName;
       }
+
+      responseBody = {
+        statusCode,
+        message,
+        error: errorName,
+      };
     } else if (exception instanceof Error) {
       message = exception.message;
+      errorName = exception.constructor.name;
+
+      responseBody = {
+        statusCode,
+        message,
+        error: errorName,
+      };
+    } else {
+      responseBody = {
+        statusCode,
+        message: 'An unexpected internal error occurred.',
+        error: 'UnknownError',
+      };
     }
 
-    const json = {
-      statusCode,
-      message,
-      error,
-    };
-
-    if (process.env.NODE_ENV !== 'production') {
-      Object.assign(json, {
-        path: req.url,
-        stack: (exception as Error).stack,
-        body: req.body,
-      });
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      !(exception instanceof BaseError)
+    ) {
+      responseBody.path = req.url;
+      if (exception instanceof Error) responseBody.stack = exception.stack;
+      if (Object.keys(req.body).length > 0) responseBody.body = req.body;
     }
 
-    return res.status(statusCode).json(json);
+    if (!responseBody.result && statusCode >= 400) {
+      responseBody.result = 'failed';
+    }
+
+    return res.status(statusCode).json(responseBody);
   }
 }

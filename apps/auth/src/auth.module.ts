@@ -14,7 +14,8 @@ import { LoginUserUseCase } from '@app/auth/application/use-cases/login-user/log
 import { TOKEN_GENERATOR_PORT } from '@app/auth/domain/ports/token-generator.port';
 import { JwtTokenService } from '@app/auth/infrastructure/jwt/jwt.service';
 import { CommonJwtModule } from '@app/common/jwt/jwt-config.module';
-import { JwtStrategy } from '@app/auth/infrastructure/strategy/jwt.strategy';
+import { InternalApiAuthGuard } from '@app/common/guards/internal-api-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -33,7 +34,6 @@ import { JwtStrategy } from '@app/auth/infrastructure/strategy/jwt.strategy';
   providers: [
     RegisterUserUseCase,
     LoginUserUseCase,
-    JwtStrategy,
     {
       provide: USER_REPOSITORY,
       useClass: UserMongoRepository,
@@ -45,6 +45,10 @@ import { JwtStrategy } from '@app/auth/infrastructure/strategy/jwt.strategy';
     {
       provide: TOKEN_GENERATOR_PORT,
       useClass: JwtTokenService,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: InternalApiAuthGuard,
     },
   ],
 })
