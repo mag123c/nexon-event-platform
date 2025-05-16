@@ -34,7 +34,6 @@
   "loginCount": 10,
   "lastLoginAt": "2024-07-10T14:30:00Z",
   "invitedFriendsCount": 3
-  // 기타 필요한 활동 데이터 추가 가능
 }
 ```
 
