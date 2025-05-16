@@ -13,7 +13,7 @@ async function bootstrap() {
     bufferLogs: true,
     logger: ['log', 'error', 'warn', 'debug'],
   });
-  const port = process.env.PORT || 5555;
+  const port = process.env.AUTH_PORT || 5555;
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
