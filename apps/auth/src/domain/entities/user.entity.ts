@@ -61,6 +61,9 @@ export class User {
   })
   roles!: Role[];
 
+  @Prop({ type: String, select: false })
+  refreshToken?: string;
+
   @Prop({ type: UserActivityDataSchema, default: () => ({}) })
   activityData?: UserActivityData;
 

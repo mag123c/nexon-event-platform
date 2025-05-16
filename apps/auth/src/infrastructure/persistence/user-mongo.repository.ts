@@ -20,8 +20,18 @@ export class UserMongoRepository implements UserRepository {
     return this.userModel.findById(id).exec();
   }
 
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    return this.userModel.findOne({ email }).select('+password').exec();
+  }
+
   async save(user: User): Promise<User> {
     const createdUser = new this.userModel(user);
     return createdUser.save();
+  }
+
+  async updateUser(user: User): Promise<User | null> {
+    return this.userModel.findByIdAndUpdate(user._id, user, {
+      new: true,
+    });
   }
 }

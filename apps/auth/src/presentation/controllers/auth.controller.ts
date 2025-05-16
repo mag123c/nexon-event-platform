@@ -1,12 +1,18 @@
+import { LoginUserInput } from '@app/auth/application/use-cases/login-user/login-user.input';
+import { LoginUserOutput } from '@app/auth/application/use-cases/login-user/login-user.output';
+import { LoginUserUseCase } from '@app/auth/application/use-cases/login-user/login-user.usecase';
 import { RegisterUserInput } from '@app/auth/application/use-cases/register-user/register-user.input';
 import { RegisterUserUseCase } from '@app/auth/application/use-cases/register-user/register-user.usecase';
 import { User } from '@app/auth/domain/entities/user.entity';
+import { LoginRequestDto } from '@app/auth/presentation/dtos/request/login-user.request.dto';
 import { RegisterUserRequestDto } from '@app/auth/presentation/dtos/request/register-user.request.dto';
+import { JwtResponseDto } from '@app/auth/presentation/dtos/response/jwt.response.dto';
 import { UserResponseDto } from '@app/auth/presentation/dtos/response/user.response.dto';
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -15,7 +21,10 @@ import {
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly registerUserUseCase: RegisterUserUseCase) {}
+  constructor(
+    private readonly registerUserUseCase: RegisterUserUseCase,
+    private readonly loginUserUseCase: LoginUserUseCase,
+  ) {}
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
@@ -45,5 +54,36 @@ export class AuthController {
       await this.registerUserUseCase.execute(useCaseInput);
 
     return UserResponseDto.fromEntity(createdUserEntity);
+  }
+
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Log in a user' })
+  @ApiBody({ type: LoginRequestDto })
+  @ApiOkResponse({
+    type: JwtResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized (비밀번호 불일치 시).',
+  })
+  @ApiResponse({ status: 404, description: 'Not Found (사용자가 없을 때)' })
+  async login(
+    @Body() loginRequestDto: LoginRequestDto,
+  ): Promise<JwtResponseDto> {
+    const useCaseInput: LoginUserInput = {
+      email: loginRequestDto.email,
+      password: loginRequestDto.password,
+    };
+
+    const loginResult: LoginUserOutput =
+      await this.loginUserUseCase.execute(useCaseInput);
+
+    const responseDto: JwtResponseDto = {
+      accessToken: loginResult.accessToken,
+      refreshToken: loginResult.refreshToken,
+    };
+
+    return responseDto;
   }
 }

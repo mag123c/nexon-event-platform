@@ -1,7 +1,7 @@
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 
 export interface JwtPayload {
-  sub: number;
+  id: string;
   email: string;
-  role: Role;
+  roles: Role[];
 }

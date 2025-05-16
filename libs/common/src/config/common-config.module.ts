@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { isProduction } from '@app/common/utils/env';
 
 const envFilePath = isProduction() ? '.env' : '.env.development';
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
