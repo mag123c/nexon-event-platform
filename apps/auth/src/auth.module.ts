@@ -14,6 +14,7 @@ import { LoginUserUseCase } from '@app/auth/application/use-cases/login-user/log
 import { TOKEN_GENERATOR_PORT } from '@app/auth/domain/ports/token-generator.port';
 import { JwtTokenService } from '@app/auth/infrastructure/jwt/jwt.service';
 import { CommonJwtModule } from '@app/common/jwt/jwt-config.module';
+import { JwtStrategy } from '@app/auth/infrastructure/strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { CommonJwtModule } from '@app/common/jwt/jwt-config.module';
   providers: [
     RegisterUserUseCase,
     LoginUserUseCase,
+    JwtStrategy,
     {
       provide: USER_REPOSITORY,
       useClass: UserMongoRepository,
