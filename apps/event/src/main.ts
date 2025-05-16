@@ -1,4 +1,3 @@
-import { AuthModule } from '@app/auth/auth.module';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import {
@@ -7,22 +6,22 @@ import {
   setupPipe,
   setupSwagger,
 } from '@app/common';
+import { EventModule } from '@app/event/event.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AuthModule, {
+  const app = await NestFactory.create<NestExpressApplication>(EventModule, {
     bufferLogs: true,
     logger: ['log', 'error', 'warn', 'debug'],
   });
-
-  const port = process.env.AUTH_PORT || 5173;
+  const port = process.env.EVENT_PORT || 6173;
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
   setupPipe(app);
-  setupSwagger(app, 'Auth API Server', 'auth');
+  setupSwagger(app, 'Event API', 'event');
 
   await app.listen(port, () => {
-    console.log(`Auth API Server is running on: ${port}`);
+    console.log(`Event API Server is running on: ${port}`);
   });
 }
 void bootstrap();

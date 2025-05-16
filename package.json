@@ -9,13 +9,13 @@
     "build": "nest build",
     "build:gateway": "nest build gateway",
     "build:auth": "nest build auth",
-    "build:events": "nest build events",
+    "build:event": "nest build event",
     "start:dev:gateway": "cross-env NODE_ENV=development nest start gateway --watch",
     "start:dev:auth": "cross-env NODE_ENV=development nest start auth --watch",
-    "start:dev:events": "cross-env NODE_ENV=development nest start events --watch",
+    "start:dev:event": "cross-env NODE_ENV=development nest start event --watch",
     "start:prod:gateway": "node dist/apps/gateway/main",
     "start:prod:auth": "node dist/apps/auth/main",
-    "start:prod:events": "node dist/apps/events/main",
+    "start:prod:event": "node dist/apps/event/main",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests",
@@ -107,7 +107,7 @@
       "^@app/common/(.*)$": "<rootDir>/libs/common/src/$1",
       "^@app/auth/(.*)$": "<rootDir>/apps/auth/src/$1",
       "^@app/gateway/(.*)$": "<rootDir>/apps/gateway/src/$1",
-      "^@app/events/(.*)$": "<rootDir>/apps/events/src/$1"
+      "^@app/event/(.*)$": "<rootDir>/apps/event/src/$1"
     }
   },
   "lint-staged": {
