@@ -1,7 +1,7 @@
-import { EventConditionCategory } from '@app/event/domain/event/value-objects/event-condition-category.vo';
-import { EventConditionOperator } from '@app/event/domain/event/value-objects/event-condition-operator.vo';
-import { SUPPORTED_EVENT_TYPES } from '@app/event/application/config/event-condition.config';
-import { EventConditionInput } from '@app/event/application/use-cases/craete-event/event-condition.input';
+import { EventConditionCategory } from '@app/event/event-core/domain/value-objects/event-condition-category.vo';
+import { EventConditionOperator } from '@app/event/event-core/domain/value-objects/event-condition-operator.vo';
+import { SUPPORTED_EVENT_TYPES } from '@app/event/event-core/application/config/event-condition.config';
+import { EventConditionInput } from '@app/event/event-core/application/use-cases/craete-event/event-condition.input';
 
 // 1. 로그인 N회 이상
 export const loginCountConditionFixture: EventConditionInput = {

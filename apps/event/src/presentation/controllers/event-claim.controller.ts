@@ -3,8 +3,8 @@ import {
   InternalUser,
   InternalUserContext,
 } from '@app/common/decorators/internal-user.decorator';
-import { ClaimRewardInput } from '@app/event/application/use-cases/claim-reward/claim-reward.inupt';
-import { ClaimRewardUseCase } from '@app/event/application/use-cases/claim-reward/claim-reward.usecase';
+import { ClaimRewardInput } from '@app/event/event-claim/application/use-cases/claim-reward/claim-reward.inupt';
+import { ClaimRewardUseCase } from '@app/event/event-claim/application/use-cases/claim-reward/claim-reward.usecase';
 import { ClaimRewardRequestDto } from '@app/event/presentation/dtos/request/event-claim.request.dto';
 import { ClaimRewardResponseDto } from '@app/event/presentation/dtos/response/event-claim.response.dto';
 import { Controller, Post, HttpCode, HttpStatus, Body } from '@nestjs/common';

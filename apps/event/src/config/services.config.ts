@@ -4,6 +4,5 @@ import { registerAs } from '@nestjs/config';
 export const authServiceConfig = registerAs('authService', () => ({
   url: process.env.AUTH_SERVICE_URL || 'http://localhost:5173',
   timeout: parseInt(process.env.AUTH_SERVICE_TIMEOUT_MS || '5000', 10),
-  // 게이트웨이에서 넘어온 API KEY를 사용하여 인증
-  //apiKey: process.env.EVENT_TO_AUTH_API_KEY,
+  apiKey: process.env.GATEWAY_INTERNAL_API_KEY, // 내부 통신이므로 신뢰한다고 간주.
 }));

@@ -1,9 +1,9 @@
 import {
   ClaimStatus,
   EventClaim,
-} from '@app/event/domain/event-claim/entities/event-claim.entity';
-import { RewardDetailsUnion } from '@app/event/domain/reward/entities/reward.entity';
-import { RewardType } from '@app/event/domain/reward/value-objects/reward-type.vo';
+} from '@app/event/event-claim/domain/event-claim/entities/event-claim.entity';
+import { RewardDetailsUnion } from '@app/event/reward/domain/entities/reward.entity';
+import { RewardType } from '@app/event/reward/domain/value-objects/reward-type.vo';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class GrantedRewardDto {
