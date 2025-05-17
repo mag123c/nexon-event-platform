@@ -1,0 +1,39 @@
+import { Injectable } from '@nestjs/common';
+import { EventClaimData } from '@app/event/domain/event-claim/entities/event-claim.entity';
+import {
+  EventClaimFactory,
+  CreateEventClaimParams,
+} from '@app/event/domain/event-claim/factories/event-claim.factory';
+
+@Injectable()
+export class EventClaimMongoFactory implements EventClaimFactory {
+  create(params: CreateEventClaimParams): EventClaimData {
+    const eventClaimDataObject: EventClaimData = {
+      userId: params.userId,
+      eventId: params.eventId,
+      status: params.status,
+      grantedRewards: params.eligibleRewardsSnapshots.map((snapshot) => ({
+        rewardId: snapshot.rewardId,
+        name: snapshot.name,
+        type: snapshot.type,
+        details: snapshot.details,
+      })),
+      conditionCheckDetails: params.conditionCheckResults
+        ? params.conditionCheckResults.map((detail) => ({
+            conditionType: detail.conditionType,
+            targetValue: detail.targetValue,
+            actualValue: detail.actualValue,
+            isMet: detail.isMet,
+            checkedAt: detail.checkedAt,
+            message: detail.message,
+          }))
+        : undefined,
+      failureReason: params.failureReason,
+      requestedAt: params.requestedAt || new Date(),
+      processedAt: params.processedAt,
+      createdAt: new Date(),
+    };
+
+    return eventClaimDataObject;
+  }
+}

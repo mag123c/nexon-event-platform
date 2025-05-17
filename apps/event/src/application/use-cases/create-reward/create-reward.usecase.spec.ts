@@ -37,7 +37,7 @@ import {
 import { Types } from 'mongoose';
 import { RewardMongoFactory } from '@app/event/infrastructure/factories/reward-mongo.factory';
 
-const mockRewardRepository: jest.Mocked<RewardRepository> = {
+const mockRewardRepository: Partial<jest.Mocked<RewardRepository>> = {
   findById: jest.fn(),
   findByEventIdAndName: jest.fn(),
   save: jest.fn(),
@@ -104,8 +104,8 @@ describe('CreateRewardUseCase', () => {
       mockEventRepository.findById.mockResolvedValue(
         mockExistingEvent as EventDocument,
       );
-      mockRewardRepository.findByEventIdAndName.mockResolvedValue(null);
-      mockRewardRepository.save.mockResolvedValue(
+      mockRewardRepository.findByEventIdAndName!.mockResolvedValue(null);
+      mockRewardRepository.save!.mockResolvedValue(
         mockSavedReward as RewardDocument,
       );
 
@@ -146,8 +146,8 @@ describe('CreateRewardUseCase', () => {
       mockEventRepository.findById.mockResolvedValue(
         mockExistingEvent as EventDocument,
       );
-      mockRewardRepository.findByEventIdAndName.mockResolvedValue(null);
-      mockRewardRepository.save.mockResolvedValue(
+      mockRewardRepository.findByEventIdAndName!.mockResolvedValue(null);
+      mockRewardRepository.save!.mockResolvedValue(
         mockSavedItemReward as RewardDocument,
       );
 
@@ -177,8 +177,8 @@ describe('CreateRewardUseCase', () => {
       mockEventRepository.findById.mockResolvedValue(
         mockExistingEvent as EventDocument,
       );
-      mockRewardRepository.findByEventIdAndName.mockResolvedValue(null);
-      mockRewardRepository.save.mockResolvedValue(
+      mockRewardRepository.findByEventIdAndName!.mockResolvedValue(null);
+      mockRewardRepository.save!.mockResolvedValue(
         mockSavedNexonCashReward as RewardDocument,
       );
 
@@ -223,7 +223,7 @@ describe('CreateRewardUseCase', () => {
       mockEventRepository.findById.mockResolvedValue(
         mockExistingEvent as EventDocument,
       );
-      mockRewardRepository.findByEventIdAndName.mockResolvedValue(
+      mockRewardRepository.findByEventIdAndName!.mockResolvedValue(
         new Reward() as RewardDocument,
       );
 
@@ -241,7 +241,7 @@ describe('CreateRewardUseCase', () => {
       mockEventRepository.findById.mockResolvedValue(
         mockExistingEvent as EventDocument,
       );
-      mockRewardRepository.findByEventIdAndName.mockResolvedValue(null);
+      mockRewardRepository.findByEventIdAndName!.mockResolvedValue(null);
 
       await expect(useCase.execute(input)).rejects.toThrow(
         InvalidRewardQuantityException,
@@ -256,8 +256,8 @@ describe('CreateRewardUseCase', () => {
       mockEventRepository.findById.mockResolvedValue(
         mockExistingEvent as EventDocument,
       );
-      mockRewardRepository.findByEventIdAndName.mockResolvedValue(null);
-      mockRewardRepository.save.mockRejectedValue(
+      mockRewardRepository.findByEventIdAndName!.mockResolvedValue(null);
+      mockRewardRepository.save!.mockRejectedValue(
         new Error('DB 저장 실패 시뮬레이션'),
       );
 

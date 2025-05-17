@@ -10,7 +10,7 @@ import {
   ApiBody,
   ApiCreatedResponse,
 } from '@nestjs/swagger';
-import { ApiInternalHeaders } from '@app/common/decorators/internal-headers.decorator';
+import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
 import {
   InternalUser,
   InternalUserContext,

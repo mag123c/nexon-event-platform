@@ -16,12 +16,12 @@ import {
   ApiCreatedResponse,
   ApiResponse,
 } from '@nestjs/swagger';
+import { CreateRewardRequestDto } from '@app/event/presentation/dtos/request/reward.request.dto';
 import {
-  ApiInternalHeaders,
   InternalUser,
   InternalUserContext,
-} from 'libs/common';
-import { CreateRewardRequestDto } from '@app/event/presentation/dtos/request/reward.request.dto';
+} from '@app/common/decorators/internal-user.decorator';
+import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
 
 @ApiTags('Event - Rewards')
 @ApiInternalHeaders()

@@ -4,13 +4,13 @@ import { Document, Types } from 'mongoose';
 
 export class UserActivityData {
   @Prop({ type: Number, default: 0 })
-  loginStreak?: number;
-
+  loginStreakDays?: number;
   @Prop({ type: [String], default: [] })
   invitedFriendIds?: string[];
-
   @Prop({ type: Date })
   lastLoginAt?: Date;
+  @Prop({ type: Date })
+  joinedAt?: Date;
 }
 
 export const UserActivityDataSchema =
