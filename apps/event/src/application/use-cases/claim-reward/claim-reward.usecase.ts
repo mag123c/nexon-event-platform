@@ -181,7 +181,7 @@ export class ClaimRewardUseCase {
   ): Promise<UserActivityData | null> {
     try {
       return await this.fetchUserActivity(input);
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(
         `[_fetchUserActivityOrThrow] 사용자 활동 데이터 가져오기 실패: userId=${input.userId}, error=${error.message}`,
         (error as Error).stack,
