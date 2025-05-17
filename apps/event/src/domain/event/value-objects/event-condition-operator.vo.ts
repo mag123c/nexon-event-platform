@@ -5,6 +5,7 @@ export enum EventConditionOperator {
   GREATER_THAN_OR_EQUAL = 'GREATER_THAN_OR_EQUAL', // 크거나 같다
   LESS_THAN = 'LESS_THAN', // 작다
   LESS_THAN_OR_EQUAL = 'LESS_THAN_OR_EQUAL', // 작거나 같다
+  // 필요시 비교 연산자 확장
   // IN = 'IN', // 배열에 포함 (예: 특정 아이템 구매 여부)
   // NOT_IN = 'NOT_IN', // 배열에 미포함 (예: 특정 아이템 미구매 여부)
   // BETWEEN = 'BETWEEN', // 두 값 사이 (value가 [min, max] 형태의 배열)

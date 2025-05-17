@@ -26,8 +26,10 @@ import {
   invalidCategoryConditionFixture,
   invalidTypeConditionFixture,
 } from '../../../../test/fixture/event-conditions.fixture';
+import { EVENT_FACTORY } from '@app/event/domain/event/factories/event.factory';
+import { EventMongoFactory } from '@app/event/infrastructure/factories/event-mongo.factory';
+import { EventConditionsValidatorService } from '@app/event/application/services/event-conditions-validator.service';
 
-// Mock EventRepository
 const mockEventRepository: jest.Mocked<EventRepository> = {
   findByName: jest.fn(),
   findById: jest.fn(),
@@ -44,7 +46,9 @@ describe('CreateEventUseCase', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CreateEventUseCase,
+        EventConditionsValidatorService,
         { provide: EVENT_REPOSITORY, useValue: mockEventRepository },
+        { provide: EVENT_FACTORY, useClass: EventMongoFactory },
       ],
     }).compile();
 
