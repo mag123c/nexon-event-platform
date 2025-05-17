@@ -30,4 +30,4 @@
 - `고민`: 이벤트 생성 시 조건(conditions) 필드의 유효성 검증을 어디까지, 그리고 어느 계층에서 수행해야 할까? 단순 DTO 유효성 검증 파이프만으로 충분할까?
 - `구현 방향`: 이벤트 조건은 카테고리(category), 타입(type), 연산자(operator), 값(value) 등 다양한 요소로 구성해두었고, 이들의 조합은 시스템에서 정의한 규칙(SUPPORTED_EVENT_TYPES 등)을 따라야 한다. 단순 형식 검증 외에 `"지원하는 조건 조합인가?"`, `"조건 값의 의미가 타입/연산자와 부합하는가?"` 등 비즈니스 규칙에 따른 의미론적 검증이 필요하다고 판단함.
 - `해결`: 유스케이스(CreateEventUseCase)의 책임으로 명확화하여 이벤트 조건의 의미론적 유효성 검증은 CreateEventUseCase 내에 validateEventConditions private 메소드로 분리하여 구현했다. 설정 기반 검증: SUPPORTED_EVENT_TYPES 설정을 통해 지원하는 조건 카테고리 및 타입 조합을 명확히 정의하고, 유스케이스는 이 설정을 참조하여 검증을 수행한다. 유효하지 않은 조건 발견 시 early-return한다.
-- `확장`: 조건 검증 로직이 매우 복잡해지거나 여러 유스케이스에서 재사용될 경우, 별도의 EventConditionValidationService (application/services 내부)로 분리하여 유스케이스의 의존성을 낮추고 테스트 용이성을 높일 수 있다. 현재 EventCondition의 세부 VO들을 조합하여 조건 자체를 VO로 만들어 생성 시점에 자체 유효성 검증을 수행하게 하는 것도 DDD 관점에서 고려해볼 수 있을 것 같다.
+- `확장`: 조건 검증 로직이 매우 복잡해지거나 여러 유스케이스에서 재사용될 경우, 별도의 EventConditionValidationService (application/services 내부)로 분리하여 유스케이스의 의존성을 낮춤. 1차 구현을 마치고 보니,  유스케이스 내부에서 mongoose의 PK(Types.ObjectId)에 직접 의존하는 경우가 있었고 이는 비즈니스 영역에서 특정 DB에 의존적이기 때문에 Factory 패턴을 통해 분리하여 사용함.
