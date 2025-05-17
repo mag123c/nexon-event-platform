@@ -47,6 +47,11 @@ export class CreateRewardRequestDto {
   @IsEnum(RewardType)
   type!: RewardType;
 
+  /**
+   * 세부 벨리데이션은 벨리데이션서비스에서 처리
+   * @see RewardDetailsValidatorService
+   * @ese apps/event/src/application/services/reward-details-validator.service.ts)
+   */
   @ApiProperty({
     example: { amount: 1000 },
     description:
@@ -58,7 +63,7 @@ export class CreateRewardRequestDto {
 
   @ApiPropertyOptional({
     example: 100,
-    description: '총 지급 가능 수량 (null 또는 없으면 무제한)',
+    description: '총 지급 가능 수량 (null/undefined = 무제한)',
   })
   @IsOptional()
   @IsNumber({}, { message: '보상 수량은 숫자여야 합니다.' })

@@ -63,9 +63,11 @@ export class Reward {
   @Prop({ required: true, type: MongooseSchema.Types.Mixed })
   details!: RewardDetailsUnion;
 
+  // 최초 세팅한 수량
   @Prop({ type: Number, default: null })
   quantity?: number | null;
 
+  // 남은 수량
   @Prop({ type: Number })
   remainingQuantity?: number;
 
