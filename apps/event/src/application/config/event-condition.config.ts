@@ -9,14 +9,10 @@ export const SUPPORTED_EVENT_TYPES: Record<EventConditionCategory, string[]> = {
   [EventConditionCategory.USER_ACTIVITY]: [
     'LOGIN_COUNT', // 로그인 횟수
     'CONSECUTIVE_LOGIN_DAYS', // 연속 로그인 일수
-    'INVITED_FRIENDS_COUNT', // 친구 초대 수
-  ],
-  [EventConditionCategory.PURCHASE_HISTORY]: [
-    'TOTAL_SPENT_AMOUNT', // 총 지출 금액
-    'PURCHASE_COUNT', // 구매 횟수
+    'LAST_LOGIN_AT', // 마지막 로그인 날짜
+    'INVITED_FRIENDS_COUNT', // 초대한 친구 수
   ],
   [EventConditionCategory.USER_PROFILE]: [
     'JOIN_DATE', // 가입일
-    'LEVEL', // 레벨
   ],
 };

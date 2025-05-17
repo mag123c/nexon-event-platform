@@ -3,6 +3,7 @@ import {
   MissingInternalApiKeyException,
   InvalidInternalApiKeyException,
 } from '@app/common/errors/internal-api-auth.exception';
+import { isDevelopment } from '@app/common/utils/env';
 import { CustomHeaders } from '@app/gateway/shared/constants/headers.constants';
 import {
   Injectable,
@@ -32,6 +33,12 @@ export class InternalApiAuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
+    if (isDevelopment()) {
+      this.logger.warn(
+        'Internal API Key is not configured in non-production environment.',
+      );
+      return true;
+    }
     if (!this.expectedApiKey) {
       this.logger.error(
         'Internal API Key is not configured. Denying access due to misconfiguration.',

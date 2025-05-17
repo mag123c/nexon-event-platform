@@ -21,6 +21,10 @@ export class EventMongoRepository implements EventRepository {
     return this.eventModel.findOne({ name }).exec();
   }
 
+  async findAll(): Promise<Event[]> {
+    throw new Error('Method not implemented.');
+  }
+
   async save(event: Event): Promise<Event> {
     const createdEvent = new this.eventModel(event);
     return createdEvent.save();

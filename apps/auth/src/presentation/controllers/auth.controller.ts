@@ -8,6 +8,7 @@ import { LoginRequestDto } from '@app/auth/presentation/dtos/request/login-user.
 import { RegisterUserRequestDto } from '@app/auth/presentation/dtos/request/register-user.request.dto';
 import { JwtResponseDto } from '@app/auth/presentation/dtos/response/jwt.response.dto';
 import { UserResponseDto } from '@app/auth/presentation/dtos/response/user.response.dto';
+import { ApiInternalHeaders } from '@app/common/decorators/internal-headers.decorator';
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   ApiBody,
@@ -19,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('Auth')
+@ApiInternalHeaders()
 @Controller('auth')
 export class AuthController {
   constructor(

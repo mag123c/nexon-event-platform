@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { EventConditionCategory } from '@app/event/domain/event/value-objects/event-condition-category.vo';
 import { EventConditionOperator } from '@app/event/domain/event/value-objects/event-condition-operator.vo';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Document } from 'mongoose';
 
 @Schema({ _id: false, timestamps: false })
 export class EventCondition extends Document {
@@ -14,8 +14,8 @@ export class EventCondition extends Document {
   @Prop({ required: true, type: String, enum: EventConditionOperator })
   operator!: EventConditionOperator;
 
-  @Prop({ required: true, type: MongooseSchema.Types.Mixed })
-  value: any;
+  @Prop({ required: true, type: Number })
+  value!: number;
 
   @Prop({ type: String })
   unit?: string;

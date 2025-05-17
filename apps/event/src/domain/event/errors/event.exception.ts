@@ -11,3 +11,9 @@ export class EventAlreadyExistsException extends BaseError {
     );
   }
 }
+
+export class InvalidEventPeriodException extends BaseError {
+  constructor(message: string = 'Invalid event period.') {
+    super(HttpStatus.BAD_REQUEST, message, undefined, 'warn');
+  }
+}
