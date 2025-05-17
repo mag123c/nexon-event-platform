@@ -1,4 +1,4 @@
-import { UserActivityData } from '@app/auth/domain/entities/user.entity';
+import { UserActivityData } from '@app/auth/user/domain/entities/user.entity';
 import { EventCondition } from '@app/event/event-core/domain/embedded/event-condition.schema';
 
 export interface EventConditionMatchDetail {

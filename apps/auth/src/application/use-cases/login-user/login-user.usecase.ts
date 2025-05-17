@@ -4,15 +4,14 @@ import { LoginUserOutput } from './login-user.output';
 import {
   UserRepository,
   USER_REPOSITORY,
-} from '../../../domain/ports/user.repository';
+} from '../../../user/domain/ports/user.repository';
 import { HashingPort, HASHING_PORT } from '../../../domain/ports/hasing.port';
 import {
   TokenGeneratorPort,
   TOKEN_GENERATOR_PORT,
 } from '../../../domain/ports/token-generator.port';
-import { UserNotFoundException } from '../../../domain/errors/user-not-found.exception';
-import { ConfigService } from '@nestjs/config';
 import { InvalidCredentialsException } from '@app/auth/domain/errors/invalid-credential.exception';
+import { UserNotFoundException } from '@app/auth/user/domain/errors/user.exception';
 
 @Injectable()
 export class LoginUserUseCase {
@@ -21,7 +20,6 @@ export class LoginUserUseCase {
     @Inject(HASHING_PORT) private readonly hashingService: HashingPort,
     @Inject(TOKEN_GENERATOR_PORT)
     private readonly tokenGenerator: TokenGeneratorPort,
-    private readonly configService: ConfigService,
   ) {}
 
   async execute(input: LoginUserInput): Promise<LoginUserOutput> {

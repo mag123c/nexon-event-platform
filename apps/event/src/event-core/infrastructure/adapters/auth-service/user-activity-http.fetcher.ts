@@ -1,4 +1,4 @@
-import { UserActivityData } from '@app/auth/domain/entities/user.entity';
+import { UserActivityData } from '@app/auth/user/domain/entities/user.entity';
 import { ExternalServiceCommsException } from '@app/common/errors/external-service.exception';
 import { UserActivityFetcher } from '@app/event/event-core/application/ports/user-activity.fetcher';
 import { authServiceConfig } from '@app/event/config/services.config';

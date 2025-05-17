@@ -1,5 +1,5 @@
-import { User, UserDocument } from '@app/auth/domain/entities/user.entity';
-import { UserRepository } from '@app/auth/domain/ports/user.repository';
+import { User, UserDocument } from '@app/auth/user/domain/entities/user.entity';
+import { UserRepository } from '@app/auth/user/domain/ports/user.repository';
 import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conneciton.token';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

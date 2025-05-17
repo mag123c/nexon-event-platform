@@ -5,9 +5,8 @@ import { Types } from 'mongoose';
 import { LoginUserInput } from '@app/auth/application/use-cases/login-user/login-user.input';
 import { LoginUserOutput } from '@app/auth/application/use-cases/login-user/login-user.output';
 import { LoginUserUseCase } from '@app/auth/application/use-cases/login-user/login-user.usecase';
-import { User } from '@app/auth/domain/entities/user.entity';
+import { User } from '@app/auth/user/domain/entities/user.entity';
 import { InvalidCredentialsException } from '@app/auth/domain/errors/invalid-credential.exception';
-import { UserNotFoundException } from '@app/auth/domain/errors/user-not-found.exception';
 import { HashingPort, HASHING_PORT } from '@app/auth/domain/ports/hasing.port';
 import {
   TokenGeneratorPort,
@@ -16,8 +15,9 @@ import {
 import {
   UserRepository,
   USER_REPOSITORY,
-} from '@app/auth/domain/ports/user.repository';
+} from '@app/auth/user/domain/ports/user.repository';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
+import { UserNotFoundException } from '@app/auth/user/domain/errors/user.exception';
 
 const mockUserRepository: jest.Mocked<UserRepository> = {
   findByEmail: jest.fn(),

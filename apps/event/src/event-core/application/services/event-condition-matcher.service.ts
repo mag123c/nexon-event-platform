@@ -1,4 +1,4 @@
-import { UserActivityData } from '@app/auth/domain/entities/user.entity';
+import { UserActivityData } from '@app/auth/user/domain/entities/user.entity';
 import {
   IEventConditionMatcherService,
   EventConditionMatchResult,

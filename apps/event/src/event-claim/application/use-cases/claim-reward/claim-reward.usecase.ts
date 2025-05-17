@@ -1,4 +1,4 @@
-import { UserActivityData } from '@app/auth/domain/entities/user.entity';
+import { UserActivityData } from '@app/auth/user/domain/entities/user.entity';
 import { BaseError } from '@app/common';
 import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conneciton.token';
 import { DatabaseOperationException } from '@app/common/errors/database-operation.exception';
