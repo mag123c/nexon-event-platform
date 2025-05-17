@@ -74,7 +74,7 @@ export class CreateEventRequestDto {
   description?: string;
 
   @ApiProperty({
-    example: '2024-08-01T00:00:00.000Z',
+    example: new Date().toISOString(),
     description: '이벤트 시작일',
   })
   @IsNotEmpty()
@@ -82,14 +82,18 @@ export class CreateEventRequestDto {
   startDate!: string;
 
   @ApiProperty({
-    example: '2024-08-31T23:59:59.000Z',
-    description: '이벤트 종료일',
+    example: new Date().toISOString() + 1000 * 60 * 60 * 24,
+    description: '이벤트 종료일 (default: 1일 후)',
   })
   @IsNotEmpty()
   @IsDateString()
   endDate!: string;
 
-  @ApiPropertyOptional({ enum: EventStatus, default: EventStatus.SCHEDULED })
+  @ApiPropertyOptional({
+    enum: EventStatus,
+    default: EventStatus.ACTIVE,
+    description: '테스트를 위해 default는 ACTIVE로 설정',
+  })
   @IsOptional()
   @IsEnum(EventStatus)
   status?: EventStatus;
