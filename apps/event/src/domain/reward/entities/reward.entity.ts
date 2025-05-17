@@ -2,6 +2,25 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { RewardType } from '../value-objects/reward-type.vo';
 
+export interface MileageRewardDetails {
+  amount: number;
+}
+
+export interface ItemRewardDetails {
+  itemId: string;
+  quantity: number;
+}
+
+export interface NexonCashRewardDetails {
+  amount: number;
+}
+
+export type RewardDetailsUnion =
+  | MileageRewardDetails
+  | ItemRewardDetails
+  | NexonCashRewardDetails
+  | Record<string, any>;
+
 export type RewardDocument = Reward & Document;
 
 @Schema({
@@ -42,7 +61,7 @@ export class Reward {
   type!: RewardType;
 
   @Prop({ required: true, type: MongooseSchema.Types.Mixed })
-  details!: Record<string, any>;
+  details!: RewardDetailsUnion;
 
   @Prop({ type: Number, default: null })
   quantity?: number | null;
@@ -61,7 +80,7 @@ export class Reward {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', index: true })
   updatedBy?: Types.ObjectId;
 
-  createdAt?: Date;
+  createdAt!: Date;
   updatedAt?: Date;
 }
 

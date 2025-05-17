@@ -5,7 +5,6 @@ export * from './src/decorators/internal-headers.decorator';
 export * from './src/decorators/internal-user.decorator';
 export * from './src/errors/base.error';
 export * from './src/errors/auth.exception';
-export * from './src/errors/database-operation.exception';
 export * from './src/errors/internal-api-auth.exception';
 export * from './src/interfaces/jwt-payload.interface';
 export * from './src/jwt/jwt-config.module';
