@@ -2,7 +2,7 @@ import { AuthModule } from '@app/auth/auth.module';
 import {
   USER_REPOSITORY,
   UserRepository,
-} from '@app/auth/domain/ports/user.repository';
+} from '@app/auth/user/domain/ports/user.repository';
 import { RegisterUserRequestDto } from '@app/auth/presentation/dtos/request/register-user.request.dto';
 import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conneciton.token';
 import { INestApplication, HttpStatus } from '@nestjs/common';
@@ -12,7 +12,7 @@ import request from 'supertest';
 import { Connection, Model } from 'mongoose';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { HttpExceptionFilter, setupPipe } from '@app/common';
-import { User, UserDocument } from '@app/auth/domain/entities/user.entity';
+import { User, UserDocument } from '@app/auth/user/domain/entities/user.entity';
 import { HASHING_PORT, HashingPort } from '@app/auth/domain/ports/hasing.port';
 import { LoginRequestDto } from '@app/auth/presentation/dtos/request/login-user.request.dto';
 import { CustomHeaders } from '@app/gateway/shared/constants/headers.constants';

@@ -1,4 +1,4 @@
-import { User } from '@app/auth/domain/entities/user.entity';
+import { User } from '@app/auth/user/domain/entities/user.entity';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 

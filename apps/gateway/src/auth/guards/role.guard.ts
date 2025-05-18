@@ -1,7 +1,7 @@
 // libs/common/src/guards/role.guard.ts (또는 apps/auth/src/presentation/guards/)
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'; // ForbiddenException 추가
 import { Reflector } from '@nestjs/core';
-import { UserDocument } from '@app/auth/domain/entities/user.entity'; // 💡 UserDocument 타입 경로 확인
+import { UserDocument } from '@app/auth/user/domain/entities/user.entity'; // 💡 UserDocument 타입 경로 확인
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { ROLES_KEY } from '@app/gateway/auth/decorators/roles.decorator';
 import { ForbiddenRoleException } from '@app/common/errors/auth.exception';

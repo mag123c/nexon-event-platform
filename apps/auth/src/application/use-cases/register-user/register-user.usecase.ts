@@ -1,12 +1,12 @@
 import { RegisterUserInput } from '@app/auth/application/use-cases/register-user/register-user.input';
-import { User } from '@app/auth/domain/entities/user.entity';
+import { User } from '@app/auth/user/domain/entities/user.entity';
 import { HashingException } from '@app/auth/domain/errors/hasing.exception';
-import { UserAlreadyExistsException } from '@app/auth/domain/errors/user-already-exists.exception';
+import { UserAlreadyExistsException } from '@app/auth/user/domain/errors/user.exception';
 import { HASHING_PORT, HashingPort } from '@app/auth/domain/ports/hasing.port';
 import {
   USER_REPOSITORY,
   UserRepository,
-} from '@app/auth/domain/ports/user.repository';
+} from '@app/auth/user/domain/ports/user.repository';
 import { Injectable, Inject } from '@nestjs/common';
 import { DatabaseOperationException } from '@app/common/errors/database-operation.exception';
 import { Role } from '@app/auth/domain/value-objects/role.vo';

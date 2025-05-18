@@ -48,7 +48,7 @@
 | `startDate`              | `Date`       | 이벤트 시작 일시                                                                   |                                   |
 | `endDate`                | `Date`       | 이벤트 종료 일시                                                                   |                                   |
 | `status`                 | `String`     | 이벤트 상태 (`SCHEDULED`, `ACTIVE`, `INACTIVE`, `ENDED`)                         |                                   |
-| `conditions`             | `[Object]`   | 이벤트 달성 조건 객체 배열. 각 객체는 아래 `EventCondition` 구조 참조.               | 이벤트 생성/수정 시 함께 정의      |
+| `condition`             | `[Object]`   | 이벤트 달성 조건                                                                   | 이벤트 생성/수정 시 함께 정의      |
 | `requiresManualApproval` | `Boolean`    | 운영자 수동 승인 필요 여부                                                         | 기본값: `false`                   |
 | `createdBy`              | `ObjectId`   | 생성자 (`users._id` 참조)                                                        |                                   |
 | `createdAt`              | `Date`       | 생성 일시                                                                        |                                   |
@@ -57,7 +57,7 @@
 
 ### `EventCondition` (임베디드 객체) 구조
 
-`event` 컬렉션의 `conditions` 배열 내 각 객체의 구조입니다.
+`event` 컬렉션의 `condition` 구조입니다. (필요 시 배열로 확장 가능)
 
 | 필드명          | 타입     | 설명                                                                 | 비고 (제약조건 등)         |
 |-----------------|----------|----------------------------------------------------------------------|----------------------------|

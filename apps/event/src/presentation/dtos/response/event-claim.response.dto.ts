@@ -1,9 +1,9 @@
 import {
   ClaimStatus,
   EventClaim,
-} from '@app/event/domain/event-claim/entities/event-claim.entity';
-import { RewardDetailsUnion } from '@app/event/domain/reward/entities/reward.entity';
-import { RewardType } from '@app/event/domain/reward/value-objects/reward-type.vo';
+} from '@app/event/event-claim/domain/event-claim/entities/event-claim.entity';
+import { RewardDetailsUnion } from '@app/event/reward/domain/entities/reward.entity';
+import { RewardType } from '@app/event/reward/domain/value-objects/reward-type.vo';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class GrantedRewardDto {
@@ -76,13 +76,14 @@ export class ClaimRewardResponseDto {
 
   static fromEntity(entity: EventClaim): ClaimRewardResponseDto {
     const dto = new ClaimRewardResponseDto();
-    dto.id = entity.id.toHexString();
-    dto.userId = entity.userId?.toHexString() ?? '';
-    dto.eventId = entity.eventId?.toHexString() ?? '';
+    console.log('TEST', entity);
+    dto.id = entity.id;
+    dto.userId = entity.userId.toString();
+    dto.eventId = entity.eventId.toString();
     dto.status = entity.status;
 
     dto.grantedRewards = entity.grantedRewards?.map((gr) => ({
-      rewardId: gr.rewardId.toHexString(),
+      rewardId: gr.rewardId.toString(),
       name: gr.name,
       type: gr.type,
       details: gr.details,

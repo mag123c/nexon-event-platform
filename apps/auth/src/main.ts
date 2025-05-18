@@ -1,12 +1,12 @@
 import { AuthModule } from '@app/auth/auth.module';
-import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
 import {
   HttpExceptionFilter,
   LoggingInterceptor,
   setupPipe,
   setupSwagger,
 } from '@app/common';
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AuthModule, {

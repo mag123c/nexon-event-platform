@@ -1,4 +1,4 @@
-import { User } from '@app/auth/domain/entities/user.entity';
+import { User } from '@app/auth/user/domain/entities/user.entity';
 import { TokenGeneratorPort } from '@app/auth/domain/ports/token-generator.port';
 import { JwtPayload } from '@app/common/interfaces/jwt-payload.interface';
 import { Injectable } from '@nestjs/common';

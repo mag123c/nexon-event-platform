@@ -3,7 +3,7 @@ import { LoginUserOutput } from '@app/auth/application/use-cases/login-user/logi
 import { LoginUserUseCase } from '@app/auth/application/use-cases/login-user/login-user.usecase';
 import { RegisterUserInput } from '@app/auth/application/use-cases/register-user/register-user.input';
 import { RegisterUserUseCase } from '@app/auth/application/use-cases/register-user/register-user.usecase';
-import { User } from '@app/auth/domain/entities/user.entity';
+import { User } from '@app/auth/user/domain/entities/user.entity';
 import { LoginRequestDto } from '@app/auth/presentation/dtos/request/login-user.request.dto';
 import { RegisterUserRequestDto } from '@app/auth/presentation/dtos/request/register-user.request.dto';
 import { JwtResponseDto } from '@app/auth/presentation/dtos/response/jwt.response.dto';
@@ -16,10 +16,12 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiResponse,
+  ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 
 @ApiTags('Auth')
+@ApiSecurity('x-internal-api-key')
 @ApiInternalHeaders()
 @Controller('auth')
 export class AuthController {

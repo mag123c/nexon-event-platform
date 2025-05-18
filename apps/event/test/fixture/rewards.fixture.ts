@@ -1,10 +1,10 @@
-import { CreateRewardInput } from '@app/event/application/use-cases/create-reward/create-reward.input';
+import { CreateRewardInput } from '@app/event/reward/application/use-cases/create-reward/create-reward.input';
 import {
   MileageRewardDetails,
   ItemRewardDetails,
   NexonCashRewardDetails,
-} from '@app/event/domain/reward/entities/reward.entity';
-import { RewardType } from '@app/event/domain/reward/value-objects/reward-type.vo';
+} from '@app/event/reward/domain/entities/reward.entity';
+import { RewardType } from '@app/event/reward/domain/value-objects/reward-type.vo';
 import { Types } from 'mongoose';
 
 const defaultEventId = new Types.ObjectId().toHexString();

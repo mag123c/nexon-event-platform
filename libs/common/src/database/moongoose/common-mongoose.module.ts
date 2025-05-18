@@ -24,6 +24,10 @@ export class CommonMongooseModule {
             }
             return {
               uri,
+              serverSelectionTimeoutMS: 5000,
+              connectTimeoutMS: 5000,
+              socketTimeoutMS: 10000,
+              maxIdleTimeMS: 30000,
             };
           },
           inject: [ConfigService],

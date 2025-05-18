@@ -6,13 +6,14 @@ import {
   setupPipe,
   setupSwagger,
 } from '@app/common';
-import { EventModule } from '@app/event/event.module';
+import { EventAppModule } from '@app/event/event-app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(EventModule, {
+  const app = await NestFactory.create<NestExpressApplication>(EventAppModule, {
     bufferLogs: true,
     logger: ['log', 'error', 'warn', 'debug'],
   });
+
   const port = process.env.EVENT_PORT || 6173;
 
   app.useGlobalFilters(new HttpExceptionFilter());

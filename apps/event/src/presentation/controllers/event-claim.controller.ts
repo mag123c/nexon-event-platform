@@ -3,29 +3,31 @@ import {
   InternalUser,
   InternalUserContext,
 } from '@app/common/decorators/internal-user.decorator';
-import { ClaimRewardInput } from '@app/event/application/use-cases/claim-reward/claim-reward.inupt';
-import { ClaimRewardUseCase } from '@app/event/application/use-cases/claim-reward/claim-reward.usecase';
-import { ClaimRewardRequestDto } from '@app/event/presentation/dtos/request/event-claim.request.dto';
+import { ClaimRewardInput } from '@app/event/event-claim/application/use-cases/claim-reward/claim-reward.inupt';
+import { ClaimRewardUseCase } from '@app/event/event-claim/application/use-cases/claim-reward/claim-reward.usecase';
 import { ClaimRewardResponseDto } from '@app/event/presentation/dtos/response/event-claim.response.dto';
-import { Controller, Post, HttpCode, HttpStatus, Body } from '@nestjs/common';
+import { Controller, Post, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
-  ApiBody,
   ApiResponse,
   ApiCreatedResponse,
+  ApiSecurity,
+  ApiParam,
 } from '@nestjs/swagger';
 
 @ApiTags('Event - Claims')
+@ApiSecurity('x-internal-api-key')
 @ApiInternalHeaders()
 @Controller('claims')
 export class EventClaimController {
   constructor(private readonly claimRewardUseCase: ClaimRewardUseCase) {}
 
-  @Post()
+  @Post(':eventId')
   @HttpCode(HttpStatus.CREATED)
+  @ApiSecurity('x-user-id')
   @ApiOperation({ summary: '이벤트 보상 요청' })
-  @ApiBody({ type: ClaimRewardRequestDto })
+  @ApiParam({ name: 'eventId', description: '이벤트 ID', type: String })
   @ApiCreatedResponse({
     description: '보상 요청 처리 완료 (성공 또는 예상된 실패 상태 포함)',
     type: ClaimRewardResponseDto,
@@ -57,12 +59,12 @@ export class EventClaimController {
     description: '외부 서비스(Auth) 통신 오류',
   })
   async claimReward(
-    @Body() claimRewardDto: ClaimRewardRequestDto,
+    @Param('eventId') eventId: string,
     @InternalUser() currentUser: InternalUserContext,
   ): Promise<ClaimRewardResponseDto> {
     const useCaseInput: ClaimRewardInput = {
       userId: currentUser.id,
-      eventId: claimRewardDto.eventId,
+      eventId,
     };
 
     const eventClaim = await this.claimRewardUseCase.execute(useCaseInput);

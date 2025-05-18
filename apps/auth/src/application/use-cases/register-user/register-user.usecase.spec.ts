@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RegisterUserUseCase } from './register-user.usecase';
 import { RegisterUserInput } from './register-user.input';
-import { User } from '../../../domain/entities/user.entity';
+import { User } from '../../../user/domain/entities/user.entity';
 import { Role } from '../../../domain/value-objects/role.vo';
 import {
   UserRepository,
   USER_REPOSITORY,
-} from '../../../domain/ports/user.repository';
+} from '../../../user/domain/ports/user.repository';
 import { HashingPort, HASHING_PORT } from '../../../domain/ports/hasing.port';
-import { UserAlreadyExistsException } from '../../../domain/errors/user-already-exists.exception';
+import { UserAlreadyExistsException } from '../../../user/domain/errors/user.exception';
 import { Types } from 'mongoose';
 import { HashingException } from '@app/auth/domain/errors/hasing.exception';
 import { DatabaseOperationException } from '@app/common/errors/database-operation.exception';

@@ -1,4 +1,4 @@
-import { User } from '@app/auth/domain/entities/user.entity';
+import { User } from '@app/auth/user/domain/entities/user.entity';
 
 export interface JwtPayload {
   id: string;
