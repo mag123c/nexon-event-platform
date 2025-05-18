@@ -27,6 +27,9 @@
       "@app/gateway/*": ["apps/gateway/src/*"],
       "@app/auth/*": ["apps/auth/src/*"],
       "@app/event/*": ["apps/event/src/*"],
+
+      // test
+      "@auth/test/*": ["apps/auth/test/*"],
       "@event/test/*": ["apps/event/test/*"]
     }
   }

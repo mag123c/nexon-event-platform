@@ -1,9 +1,5 @@
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
-import {
-  InternalUser,
-  InternalUserContext,
-} from '@app/common/decorators/internal-user.decorator';
 import { ListMyEventClaimsUseCaseInput } from '@app/event/event-claim/application/use-cases/list-my-event-claims/list-my-event-claims.input';
 import { ListMyEventClaimsUseCase } from '@app/event/event-claim/application/use-cases/list-my-event-claims/list-my-event-claims.usecase';
 import { ClaimRewardInput } from '@app/event/event-claim/application/use-cases/claim-reward/claim-reward.inupt';
@@ -34,6 +30,8 @@ import {
 import { ListAllEventClaimsUseCaseInput } from '@app/event/event-claim/application/use-cases/list-all-event-claims/list-all-event-claims.input';
 import { ListAllEventClaimsQueryDto } from '@app/event/event-claim/presentation/dtos/request/list-all-event-claims.query.dto';
 import { ListAllEventClaimsUseCase } from '@app/event/event-claim/application/use-cases/list-all-event-claims/list-all-event-claims.usecase';
+import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
+import { InternalUserContext } from '@app/common/interfaces/internal-user-context.interface';
 
 @ApiTags('Event - Claims')
 @ApiSecurity('x-internal-api-key')
@@ -83,7 +81,7 @@ export class EventClaimController {
   })
   async claimReward(
     @Param('eventId') eventId: string,
-    @InternalUser() currentUser: InternalUserContext,
+    @CurrentUser() currentUser: InternalUserContext,
   ): Promise<ClaimRewardResponseDto> {
     const useCaseInput: ClaimRewardInput = {
       userId: currentUser.id,
@@ -115,7 +113,7 @@ export class EventClaimController {
     description: '권한 없음 (USER 역할이 아님)',
   })
   async listMyClaims(
-    @InternalUser() currentUser: InternalUserContext,
+    @CurrentUser() currentUser: InternalUserContext,
     @Query() queryDto: ListMyEventClaimsQueryDto,
   ): Promise<PaginatedEventClaimsResponseDto> {
     const useCaseInput: ListMyEventClaimsUseCaseInput = {
@@ -167,7 +165,7 @@ export class EventClaimController {
     @Query() queryDto: ListAllEventClaimsQueryDto,
   ): Promise<PaginatedEventClaimsResponseDto> {
     const useCaseInput: ListAllEventClaimsUseCaseInput = {
-      userId: queryDto.userId, // 관리자는 userId로 필터링 가능
+      userId: queryDto.userId,
       eventId: queryDto.eventId,
       status: queryDto.status,
       requestedAtFrom: queryDto.requestedAtFrom

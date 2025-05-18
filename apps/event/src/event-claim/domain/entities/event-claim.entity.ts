@@ -39,8 +39,8 @@ export class EventClaim extends Document {
   @Prop({ type: [GrantedRewardSchema], default: [] })
   grantedRewards!: GrantedReward[];
 
-  @Prop({ type: [ConditionCheckResultSchema], default: [] })
-  conditionCheckDetails?: ConditionCheckResult[]; // 조건 검증 결과
+  @Prop({ type: ConditionCheckResultSchema, default: [] })
+  conditionCheckDetail?: ConditionCheckResult;
 
   @Prop()
   failureReason?: string; // 실패 사유 (간단한 문자열)

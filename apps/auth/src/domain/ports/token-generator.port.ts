@@ -1,10 +1,5 @@
 import { User } from '@app/auth/user/domain/entities/user.entity';
-
-export interface JwtPayload {
-  id: string;
-  email: string;
-  roles: string[];
-}
+import { JwtPayload } from '@app/common/interfaces/jwt-payload.interface';
 
 export interface TokenGeneratorPort {
   generateAccessToken(user: User): Promise<string>;

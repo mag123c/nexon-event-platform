@@ -7,8 +7,8 @@ import { EventClaimData } from '@app/event/event-claim/domain/interfaces/event-c
 
 @Injectable()
 export class EventClaimMongoFactory implements EventClaimFactory {
-  create(params: CreateEventClaimParams): Omit<EventClaimData, '_id'> {
-    const eventClaimDataObject: Omit<EventClaimData, '_id'> = {
+  create(params: CreateEventClaimParams): EventClaimData {
+    const eventClaimDataObject = {
       userId: params.userId,
       eventId: params.eventId,
       status: params.status,
@@ -25,6 +25,6 @@ export class EventClaimMongoFactory implements EventClaimFactory {
       createdAt: new Date(),
     };
 
-    return eventClaimDataObject;
+    return eventClaimDataObject as EventClaimData;
   }
 }

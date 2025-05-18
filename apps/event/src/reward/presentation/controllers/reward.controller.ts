@@ -13,10 +13,6 @@ import {
 } from '@nestjs/common';
 
 import { CreateRewardRequestDto } from '@app/event/reward/presentation/dtos/request/reward.request.dto';
-import {
-  InternalUser,
-  InternalUserContext,
-} from '@app/common/decorators/internal-user.decorator';
 import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
 import {
   ApiTags,
@@ -31,6 +27,8 @@ import { ListRewardsQueryDto } from '@app/event/reward/presentation/dtos/request
 import { ListRewardsByEventIdUseCase } from '@app/event/reward/application/use-cases/list-rewards-by-event-id/list-rewards-by-event-id.usecase';
 import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
+import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
+import { InternalUserContext } from '@app/common/interfaces/internal-user-context.interface';
 
 @ApiTags('Event - Rewards')
 @ApiSecurity('x-internal-api-key')
@@ -72,7 +70,7 @@ export class RewardController {
   async createRewardForEvent(
     @Param('eventId') eventId: string,
     @Body() createRewardDto: CreateRewardRequestDto,
-    @InternalUser() currentUser: InternalUserContext,
+    @CurrentUser() currentUser: InternalUserContext,
   ): Promise<RewardResponseDto> {
     const useCaseInput: CreateRewardInput = {
       eventId: eventId,

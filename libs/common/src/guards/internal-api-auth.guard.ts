@@ -1,3 +1,4 @@
+import { Role } from '@app/auth/domain/value-objects/role.vo';
 import {
   MisconfiguredInternalApiAuthException,
   MissingInternalApiKeyException,
@@ -62,6 +63,26 @@ export class InternalApiAuthGuard implements CanActivate {
         `Invalid ${CustomHeaders.INTERNAL_API_KEY} received. Access denied.`,
       );
       throw new InvalidInternalApiKeyException();
+    }
+
+    // API KEY가 유효한 경우, 사용자 ID와 역할을 설정합니다.
+    const userId = request.headers[CustomHeaders.USER_ID.toLowerCase()];
+    const rolesHeader = request.headers[CustomHeaders.USER_ROLES.toLowerCase()];
+
+    if (userId) {
+      let roles: Role[] = [];
+      if (rolesHeader && typeof rolesHeader === 'string') {
+        roles = rolesHeader
+          .split(',')
+          .map((role) => role.trim().toUpperCase() as Role);
+      } else if (rolesHeader && Array.isArray(rolesHeader)) {
+        roles = rolesHeader.map((role) => role.trim().toUpperCase() as Role);
+      }
+      request.user = { id: userId, roles: roles };
+    } else {
+      this.logger.warn(
+        'Missing X-User-ID header, but Internal API Key was valid.',
+      );
     }
 
     return true;

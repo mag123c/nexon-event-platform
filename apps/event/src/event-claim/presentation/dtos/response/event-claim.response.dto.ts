@@ -56,8 +56,8 @@ export class ClaimRewardResponseDto {
   @ApiPropertyOptional({ type: [GrantedRewardDto] })
   grantedRewards?: GrantedRewardDto[];
 
-  @ApiPropertyOptional({ type: [ConditionCheckResultDto] })
-  conditionCheckDetails?: ConditionCheckResultDto[];
+  @ApiPropertyOptional({ type: ConditionCheckResultDto })
+  conditionCheckDetail?: ConditionCheckResultDto;
 
   @ApiPropertyOptional()
   failureReason?: string;
@@ -76,7 +76,6 @@ export class ClaimRewardResponseDto {
 
   static fromEntity(entity: EventClaim): ClaimRewardResponseDto {
     const dto = new ClaimRewardResponseDto();
-    console.log('TEST', entity);
     dto.id = entity.id;
     dto.userId = entity.userId.toString();
     dto.eventId = entity.eventId.toString();
@@ -89,14 +88,7 @@ export class ClaimRewardResponseDto {
       details: gr.details,
     }));
 
-    dto.conditionCheckDetails = entity.conditionCheckDetails?.map((cd) => ({
-      conditionType: cd.conditionType,
-      targetValue: cd.targetValue,
-      actualValue: cd.actualValue,
-      isMet: cd.isMet,
-      checkedAt: cd.checkedAt,
-      message: (cd as any).message,
-    }));
+    dto.conditionCheckDetail = entity.conditionCheckDetail;
 
     dto.failureReason = entity.failureReason;
     dto.requestedAt = entity.requestedAt;

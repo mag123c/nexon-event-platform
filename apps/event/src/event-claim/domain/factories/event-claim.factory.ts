@@ -1,5 +1,8 @@
-import { ClaimStatus, EventClaimData } from '../entities/event-claim.entity';
-import { GrantedReward as DomainGrantedReward } from '../entities/event-claim.entity';
+import { EventClaimData } from '@app/event/event-claim/domain/interfaces/event-claim-data.interface';
+import {
+  ClaimStatus,
+  GrantedReward as DomainGrantedReward,
+} from '../entities/event-claim.entity';
 
 import { EventConditionMatchDetail } from '@app/event/event-core/application/ports/event-condition-matcher.service';
 

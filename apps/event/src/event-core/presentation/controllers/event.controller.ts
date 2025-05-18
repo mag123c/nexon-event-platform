@@ -23,10 +23,6 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
-import {
-  InternalUser,
-  InternalUserContext,
-} from '@app/common/decorators/internal-user.decorator';
 import { EventStatus } from '@app/event/event-core/domain/value-objects/event-status.vo';
 import { ListEventsQueryDto } from '@app/event/event-core/presentation/dtos/request/list-event-query.dto';
 import { EventDetailResponseDto } from '@app/event/event-core/presentation/dtos/response/event-detail.response.dto';
@@ -36,6 +32,8 @@ import { ListEventsUseCase } from '@app/event/event-core/application/use-cases/l
 import { ListEventsUseCaseOutput } from '@app/event/event-core/application/use-cases/list-event/list-event.output';
 import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
+import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
+import { InternalUserContext } from '@app/common/interfaces/internal-user-context.interface';
 
 @ApiTags('Event')
 @ApiSecurity('x-internal-api-key')
@@ -62,7 +60,7 @@ export class EventController {
   @ApiResponse({ status: 403, description: 'Forbidden (Insufficient role).' })
   async createEvent(
     @Body() createEventDto: CreateEventRequestDto,
-    @InternalUser() currentUser: InternalUserContext,
+    @CurrentUser() currentUser: InternalUserContext,
   ): Promise<EventResponseDto> {
     const useCaseInput: CreateEventInput = {
       name: createEventDto.name,
