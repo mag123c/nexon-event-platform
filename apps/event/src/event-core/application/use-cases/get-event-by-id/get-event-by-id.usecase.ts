@@ -25,7 +25,7 @@ export class GetEventByIdUseCase {
       this.logger.warn(
         `[GetEventByIdUseCase] 이벤트를 찾을 수 없음: eventId=${input.eventId}`,
       );
-      throw new EventNotFoundException(input.eventId); // 적절한 예외 사용
+      throw new EventNotFoundException(input.eventId);
     }
     return event;
   }

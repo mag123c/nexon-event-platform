@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import {
   EVENT_CLAIM_REPOSITORY,
-  EventClaimRepository, // IEventClaimRepository 대신 실제 클래스 사용 (네 컨벤션)
+  EventClaimRepository,
   ListEventClaimsCriteria,
 } from '@app/event/event-claim/domain/ports/event-claim.repository';
 import { ListAllEventClaimsUseCaseInput } from './list-all-event-claims.input';
@@ -25,7 +25,7 @@ export class ListAllEventClaimsUseCase {
     );
 
     const criteria: ListEventClaimsCriteria = {
-      userId: input.userId, // <--- 관리자는 특정 userId로 필터링 가능 (없으면 전체)
+      userId: input.userId,
       eventId: input.eventId,
       status: input.status,
       requestedAtFrom: input.requestedAtFrom,
@@ -54,7 +54,7 @@ export class ListAllEventClaimsUseCase {
     );
 
     return {
-      claims: claimsData, // EventClaimData[] 그대로 반환
+      claims: claimsData,
       totalCount,
       currentPage,
       itemsPerPage: limit,

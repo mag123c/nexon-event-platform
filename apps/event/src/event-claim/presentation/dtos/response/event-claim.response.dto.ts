@@ -81,12 +81,14 @@ export class ClaimRewardResponseDto {
     dto.eventId = entity.eventId.toString();
     dto.status = entity.status;
 
-    dto.grantedRewards = entity.grantedRewards?.map((gr) => ({
-      rewardId: gr.rewardId.toString(),
-      name: gr.name,
-      type: gr.type,
-      details: gr.details,
-    }));
+    dto.grantedRewards = entity.grantedRewards?.map((gr) => {
+      return {
+        rewardId: gr.rewardId.toString(),
+        name: gr.name,
+        type: gr.type,
+        details: gr.details,
+      };
+    });
 
     dto.conditionCheckDetail = entity.conditionCheckDetail;
 

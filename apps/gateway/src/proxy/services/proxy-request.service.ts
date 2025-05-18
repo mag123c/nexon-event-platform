@@ -106,8 +106,8 @@ export class ProxyRequestService {
         axiosError.stack,
       );
 
+      // 응답 자체가 없는 경우 (네트워크 에러, 타임아웃, DNS 조회 실패 등)
       if (axiosError.isAxiosError && !axiosError.response) {
-        // 응답 자체가 없는 경우 (네트워크 에러, 타임아웃, DNS 조회 실패 등)
         throw new ServiceUnavailableProxyException(serviceName, axiosError);
       }
 
@@ -121,7 +121,6 @@ export class ProxyRequestService {
         );
       }
 
-      // 이미 BaseError 타입의 예외라면 (예: 위에서 던진 BadGatewayProxyException) 그대로 다시 던짐
       if (error instanceof BaseError) {
         throw error;
       }

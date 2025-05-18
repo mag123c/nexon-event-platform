@@ -1,5 +1,6 @@
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
+
 import { ListMyEventClaimsUseCaseInput } from '@app/event/event-claim/application/use-cases/list-my-event-claims/list-my-event-claims.input';
 import { ListMyEventClaimsUseCase } from '@app/event/event-claim/application/use-cases/list-my-event-claims/list-my-event-claims.usecase';
 import { ClaimRewardInput } from '@app/event/event-claim/application/use-cases/claim-reward/claim-reward.inupt';
@@ -162,10 +163,11 @@ export class EventClaimController {
   })
   @ApiResponse({ status: HttpStatus.FORBIDDEN, description: '권한 없음' })
   async listAllClaims(
+    @CurrentUser() _currentUser: InternalUserContext,
     @Query() queryDto: ListAllEventClaimsQueryDto,
   ): Promise<PaginatedEventClaimsResponseDto> {
     const useCaseInput: ListAllEventClaimsUseCaseInput = {
-      userId: queryDto.userId,
+      userId: queryDto.userId, // 관리자는 userId로 필터링 가능
       eventId: queryDto.eventId,
       status: queryDto.status,
       requestedAtFrom: queryDto.requestedAtFrom

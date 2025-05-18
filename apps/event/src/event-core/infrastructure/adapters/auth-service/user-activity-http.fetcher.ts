@@ -56,7 +56,7 @@ export class UserActivityHttpFetcher implements UserActivityFetcher {
               );
               if (error.response?.status === 404) {
                 // Auth 서버에서 유저를 못 찾은 경우 null 반환
-                return Promise.resolve({ data: null } as any); // API 스펙에 따라 조정
+                return Promise.resolve({ data: null } as any);
               }
               throw new ExternalServiceCommsException(
                 `Auth 서비스 통신 오류: ${error.message}`,
@@ -76,7 +76,7 @@ export class UserActivityHttpFetcher implements UserActivityFetcher {
         );
         return response.data;
       } else if (response.status === 404) {
-        // 위 catchError에서 처리했지만, 이중 확인
+        // 이중 확인
         this.logger.warn(`User not found in Auth service for userId ${userId}`);
         return null;
       }
@@ -89,7 +89,7 @@ export class UserActivityHttpFetcher implements UserActivityFetcher {
         { service: 'AuthService', status: response.status },
       );
     } catch (error: any) {
-      // 위에서 ExternalServiceCommsException으로 변환되지 않은 다른 예외들 (네트워크 오류 등)
+      // 다른 예외들 (네트워크 오류 등)
       if (error instanceof ExternalServiceCommsException) throw error;
 
       this.logger.error(

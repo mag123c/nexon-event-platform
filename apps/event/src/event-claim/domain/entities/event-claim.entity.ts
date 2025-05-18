@@ -43,10 +43,10 @@ export class EventClaim extends Document {
   conditionCheckDetail?: ConditionCheckResult;
 
   @Prop()
-  failureReason?: string; // 실패 사유 (간단한 문자열)
+  failureReason?: string;
 
   @Prop({ default: Date.now })
-  requestedAt!: Date; // 유저 요청 시각
+  requestedAt!: Date;
 
   @Prop()
   processedAt?: Date;

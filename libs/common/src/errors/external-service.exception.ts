@@ -5,13 +5,10 @@ export interface ExternalServiceErrorDetails {
   originalStatus?: number;
   originalError?: any;
   context?: {
-    [key: string]: any; // 추가적인 컨텍스트 정보
+    [key: string]: any;
   };
 }
 
-/**
- * 외부 서비스와의 통신 중 발생하는 오류를 나타내는 예외 클래스
- */
 export class ExternalServiceCommsException extends HttpException {
   public readonly details: ExternalServiceErrorDetails;
 

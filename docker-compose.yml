@@ -3,7 +3,7 @@ services:
   auth_app_dev:
     build:
       context: .
-      dockerfile: ./apps/auth/Dockerfile.dev
+      dockerfile: ./apps/auth/Dockerfile
     container_name: auth_app_dev
     ports:
       - '5173:5173'
@@ -23,7 +23,7 @@ services:
   event_app_dev:
     build:
       context: .
-      dockerfile: ./apps/event/Dockerfile.dev
+      dockerfile: ./apps/event/Dockerfile
     container_name: event_app_dev
     ports:
       - '6173:6173'

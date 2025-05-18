@@ -23,7 +23,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       throw new JwtExpiredException();
     }
 
-    // 에러 혹은 strategy에서 user를 찾지 못한 경우
     if (err || !user) {
       throw new JwtUnauthorizedException();
     }

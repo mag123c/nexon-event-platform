@@ -8,14 +8,6 @@ import {
 import { Response } from 'express';
 import { BaseError } from '@app/common/errors/base.error';
 
-interface ErrorResponse {
-  code: number;
-  message: string;
-  path?: string;
-  stack?: string;
-  body?: any;
-}
-
 @Catch(Error)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {

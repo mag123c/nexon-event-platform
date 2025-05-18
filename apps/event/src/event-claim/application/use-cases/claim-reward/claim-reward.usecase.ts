@@ -61,16 +61,10 @@ export class ClaimRewardUseCase {
     private readonly eventClaimRepository: EventClaimRepository,
     @Inject(EVENT_CLAIM_FACTORY)
     private readonly eventClaimFactory: EventClaimFactory,
-
-    // Auth 서버 등에서 유저 활동 데이터 가져오기
     @Inject(USER_ACTIVITY_FETCHER)
     private readonly userActivityFetcher: UserActivityFetcher,
-
-    // 이벤트 조건 매칭 서비스
     @Inject(EVENT_CONDITION_MATCHER_SERVICE)
     private readonly conditionMatcher: EventConditionMatcherService,
-
-    // 트랜잭션 Connection
     @InjectConnection(MONGO_CONNECTIONS.EVENT)
     private readonly mongoConnection: Connection,
   ) {}

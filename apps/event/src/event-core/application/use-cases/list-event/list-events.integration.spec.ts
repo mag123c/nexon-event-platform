@@ -6,20 +6,12 @@ import {
   EventDocument,
   EventSchema,
 } from '@app/event/event-core/domain/entities/event.entity';
-import {
-  EventRepository,
-  EVENT_REPOSITORY,
-} from '@app/event/event-core/domain/ports/event.repository';
 import { EventStatus } from '@app/event/event-core/domain/value-objects/event-status.vo';
 import { EventCoreModule } from '@app/event/event-core/event-core.module';
 import { ConfigModule } from '@nestjs/config';
-import {
-  MongooseModule,
-  getModelToken,
-  getConnectionToken,
-} from '@nestjs/mongoose';
+import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { TestingModule, Test } from '@nestjs/testing';
-import { Model, Connection } from 'mongoose';
+import { Model } from 'mongoose';
 import path from 'path';
 import dotenv from 'dotenv';
 import { generateNRandomEventData } from '@event/test/fixture/event.fixture';
@@ -35,8 +27,6 @@ describe('ListEventsUseCase - Integration Tests', () => {
   let module: TestingModule;
   let listEventsUseCase: ListEventsUseCase;
   let eventModel: Model<EventDocument>;
-  let eventRepository: EventRepository;
-  let dbConnection: Connection;
   const numberOfEvents = 100;
   let eventFixtures: Omit<Event, '_id' | 'createdAt' | 'updatedAt' | 'id'>[];
 
@@ -63,10 +53,6 @@ describe('ListEventsUseCase - Integration Tests', () => {
     eventModel = module.get<Model<EventDocument>>(
       getModelToken(Event.name, MONGO_CONNECTIONS.EVENT),
     );
-    eventRepository = module.get<EventRepository>(EVENT_REPOSITORY);
-    dbConnection = module.get<Connection>(
-      getConnectionToken(MONGO_CONNECTIONS.EVENT),
-    );
 
     eventFixtures = generateNRandomEventData(numberOfEvents);
   });
@@ -78,7 +64,6 @@ describe('ListEventsUseCase - Integration Tests', () => {
 
   afterAll(async () => {
     await eventModel.deleteMany({});
-    await dbConnection.close();
     await module.close();
   });
 

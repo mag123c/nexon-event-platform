@@ -3,7 +3,6 @@ import { RewardType } from '@app/event/reward/domain/value-objects/reward-type.v
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
-// 지급된 보상
 @Schema({ _id: false, versionKey: false, timestamps: false })
 export class GrantedReward {
   @Prop({ type: Types.ObjectId, ref: 'Reward', required: true })

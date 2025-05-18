@@ -24,7 +24,6 @@ export class AuthProxyController {
       serviceUrl,
       options,
     );
-    // ProxyRequestService가 성공적인 응답(4xx 포함)을 반환하면, 그 내용을 클라이언트에 전달
     res.status(serviceResponse.status).json(serviceResponse.data);
   }
 

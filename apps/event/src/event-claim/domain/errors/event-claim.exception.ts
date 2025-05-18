@@ -41,9 +41,6 @@ export class ConditionsNotMetException extends BaseError {
   }
 }
 
-/**
- * 보상이 없음.
- */
 export class NoRewardsAvailableException extends BaseError {
   constructor(eventId: string) {
     super(

@@ -42,7 +42,7 @@ export class EventClaimMongoRepository implements EventClaimRepository {
       .findOne({
         userId,
         eventId,
-        status: ClaimStatus.SUCCESS, // 성공한 요청 조회
+        status: ClaimStatus.SUCCESS,
       })
       .exec();
   }
