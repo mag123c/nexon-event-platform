@@ -42,10 +42,12 @@ import { UserActivityData } from '@app/auth/user/domain/entities/user.entity';
 import { ClaimRewardInput } from '@app/event/event-claim/application/use-cases/claim-reward/claim-reward.inupt';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { EventConditionOperator } from '@app/event/event-core/domain/value-objects/event-condition-operator.vo';
+import { EventConditionCategory } from '@app/event/event-core/domain/value-objects/event-condition-category.vo';
 
 const mockEventRepo: jest.Mocked<EventRepository> = {
   findById: jest.fn(),
   findByName: jest.fn(),
+  findAllWithPagination: jest.fn(),
   save: jest.fn(),
 };
 const mockRewardRepo: jest.Mocked<RewardRepository> = {
@@ -90,7 +92,7 @@ describe('ClaimRewardUseCase', () => {
       startDate: new Date(Date.now() - 1000 * 60 * 60),
       endDate: new Date(Date.now() + 1000 * 60 * 60),
       condition: {
-        category: 'USER_ACTIVITY',
+        category: EventConditionCategory.USER_ACTIVITY,
         type: 'LOGIN_STREAK_DAYS',
         operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
         value: 3,
@@ -168,7 +170,7 @@ describe('ClaimRewardUseCase', () => {
       const input = getBaseInput();
       const event = mockActiveEvent();
       event.condition = {
-        category: 'USER_ACTIVITY',
+        category: EventConditionCategory.USER_ACTIVITY,
         type: 'LOGIN_STREAK_DAYS',
         operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
         value: 3,
@@ -308,7 +310,7 @@ describe('ClaimRewardUseCase', () => {
     it('이벤트 조건 미충족 시 ConditionsNotMetException 발생 및 실패 기록', async () => {
       const event = mockActiveEvent();
       event.condition = {
-        category: 'USER_ACTIVITY',
+        category: EventConditionCategory.USER_ACTIVITY,
         type: 'LOGIN_STREAK_DAYS',
         operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
         value: 10,

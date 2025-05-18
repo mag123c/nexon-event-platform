@@ -31,6 +31,7 @@ import { EventConditionsValidatorService } from '@app/event/event-core/applicati
 const mockEventRepository: jest.Mocked<EventRepository> = {
   findByName: jest.fn(),
   findById: jest.fn(),
+  findAllWithPagination: jest.fn(),
   save: jest.fn(),
 };
 
