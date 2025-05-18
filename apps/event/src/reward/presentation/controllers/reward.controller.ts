@@ -9,28 +9,32 @@ import {
   Param,
   Body,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiBody,
-  ApiCreatedResponse,
-  ApiResponse,
-} from '@nestjs/swagger';
+
 import { CreateRewardRequestDto } from '@app/event/reward/presentation/dtos/request/reward.request.dto';
 import {
   InternalUser,
   InternalUserContext,
 } from '@app/common/decorators/internal-user.decorator';
 import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiResponse,
+  ApiSecurity,
+} from '@nestjs/swagger';
 
 @ApiTags('Event - Rewards')
+@ApiSecurity('x-internal-api-key')
 @ApiInternalHeaders()
 @Controller('rewards')
 export class RewardController {
   constructor(private readonly createRewardUseCase: CreateRewardUseCase) {}
 
-  @Post(':eventId/rewards')
+  @Post(':eventId')
   @HttpCode(HttpStatus.CREATED)
+  @ApiSecurity('x-user-id')
   @ApiOperation({ summary: '이벤트에 보상 생성' })
   @ApiBody({ type: CreateRewardRequestDto })
   @ApiCreatedResponse({

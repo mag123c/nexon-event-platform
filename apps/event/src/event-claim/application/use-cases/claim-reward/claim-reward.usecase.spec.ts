@@ -66,8 +66,10 @@ const mockUserActivityFetcher: jest.Mocked<UserActivityFetcher> = {
 };
 
 const mockSession: Partial<jest.Mocked<ClientSession>> = {
-  withTransaction: jest.fn().mockImplementation(async (fn) => fn(mockSession)),
-  endSession: jest.fn(),
+  withTransaction: jest.fn() as jest.MockedFunction<
+    ClientSession['withTransaction']
+  >,
+  endSession: jest.fn().mockResolvedValue(undefined),
 };
 
 const mockMongoConnection: jest.Mocked<Connection> = {
@@ -87,7 +89,12 @@ describe('ClaimRewardUseCase', () => {
       status: EventStatus.ACTIVE,
       startDate: new Date(Date.now() - 1000 * 60 * 60),
       endDate: new Date(Date.now() + 1000 * 60 * 60),
-      condition: {} as any,
+      condition: {
+        category: 'USER_ACTIVITY',
+        type: 'LOGIN_STREAK_DAYS',
+        operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
+        value: 3,
+      },
       createdBy: new Types.ObjectId(),
     } as Event;
   };
@@ -124,10 +131,16 @@ describe('ClaimRewardUseCase', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    mockSession.withTransaction!.mockImplementation(async (fn) =>
-      fn(mockSession as ClientSession),
+    (mockSession.withTransaction! as jest.Mock).mockImplementation(
+      async (fn: (session: ClientSession) => Promise<any>) => {
+        try {
+          const result = await fn(mockSession as ClientSession);
+          return result;
+        } catch (error) {
+          throw error;
+        }
+      },
     );
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ClaimRewardUseCase,
@@ -211,6 +224,7 @@ describe('ClaimRewardUseCase', () => {
     it('조건 없는 이벤트에 대해 재고 있는 보상 지급 성공', async () => {
       const input = getBaseInput();
       const event = mockActiveEvent();
+      event.condition = null as any; // 조건 없음
       const reward1Id = new Types.ObjectId();
       const reward1 = mockReward(reward1Id, '보상1', 1);
 
@@ -364,14 +378,16 @@ describe('ClaimRewardUseCase', () => {
         new Error('Simulated DB error in transaction'),
       );
 
-      // withTransaction이 에러를 그대로 전파한다고 가정
-      mockSession.withTransaction!.mockImplementation(async (fn) => {
-        try {
-          return await fn(mockSession as ClientSession);
-        } catch (e) {
-          throw e;
-        }
-      });
+      (mockSession.withTransaction! as jest.Mock).mockImplementation(
+        async (fn: (session: ClientSession) => Promise<any>) => {
+          try {
+            const result = await fn(mockSession as ClientSession);
+            return result;
+          } catch (error) {
+            throw error;
+          }
+        },
+      );
 
       await expect(useCase.execute(getBaseInput())).rejects.toThrow(
         DatabaseOperationException,

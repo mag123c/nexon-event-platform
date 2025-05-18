@@ -14,9 +14,11 @@ import {
   ApiBody,
   ApiResponse,
   ApiCreatedResponse,
+  ApiSecurity,
 } from '@nestjs/swagger';
 
 @ApiTags('Event - Claims')
+@ApiSecurity('x-internal-api-key')
 @ApiInternalHeaders()
 @Controller('claims')
 export class EventClaimController {
@@ -24,6 +26,7 @@ export class EventClaimController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @ApiSecurity('x-user-id')
   @ApiOperation({ summary: '이벤트 보상 요청' })
   @ApiBody({ type: ClaimRewardRequestDto })
   @ApiCreatedResponse({

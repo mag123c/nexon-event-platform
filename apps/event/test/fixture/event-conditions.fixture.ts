@@ -7,7 +7,7 @@ import { EventConditionInput } from '@app/event/event-core/application/use-cases
 export const loginCountConditionFixture: EventConditionInput = {
   category: EventConditionCategory.USER_ACTIVITY,
   type: SUPPORTED_EVENT_TYPES[EventConditionCategory.USER_ACTIVITY].find(
-    (t) => t === 'LOGIN_COUNT',
+    (t) => t === 'LOGIN_STREAK_DAYS',
   )!,
   operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
   value: 5,

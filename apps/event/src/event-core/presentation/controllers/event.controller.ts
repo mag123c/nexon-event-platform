@@ -9,6 +9,7 @@ import {
   ApiResponse,
   ApiBody,
   ApiCreatedResponse,
+  ApiSecurity,
 } from '@nestjs/swagger';
 import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
 import {
@@ -17,6 +18,7 @@ import {
 } from '@app/common/decorators/internal-user.decorator';
 
 @ApiTags('Event')
+@ApiSecurity('x-internal-api-key')
 @ApiInternalHeaders()
 @Controller('events')
 export class EventController {
@@ -24,6 +26,7 @@ export class EventController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @ApiSecurity('x-user-id')
   @ApiOperation({ summary: '이벤트 생성' })
   @ApiBody({ type: CreateEventRequestDto })
   @ApiCreatedResponse({

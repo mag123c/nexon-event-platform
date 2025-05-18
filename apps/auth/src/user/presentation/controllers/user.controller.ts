@@ -4,6 +4,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiResponse,
+  ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 import { UserActivityResponseDto } from '../dtos/response/user-activity.response.dto';
@@ -12,12 +13,14 @@ import { GetUserUseCase } from '@app/auth/user/application/use-cases/get-user/ge
 import { User } from '@app/auth/user/domain/entities/user.entity';
 
 @ApiTags('Users (Internal Operations)')
+@ApiSecurity('x-internal-api-key')
+@ApiSecurity('x-user-id')
 @ApiInternalHeaders()
 @Controller('users')
 export class UserController {
   constructor(private readonly getUserUseCase: GetUserUseCase) {}
 
-  @Get(':userId/activity-data')
+  @Get('activity-data')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '특정 유저의 활동 데이터 조회 (내부 서비스용)' })
   @ApiParam({

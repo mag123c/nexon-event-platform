@@ -26,7 +26,27 @@ export const swaggerConfig = (title: string, description?: string) => {
         description:
           'Gateway internal API Key for server-to-server communication.',
       },
-      'internalApiKey',
+      'x-internal-api-key',
+    )
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'X-User-Id',
+        in: 'header',
+        description:
+          'User ID for internal API key authentication. This is used to identify the user making the request.',
+      },
+      'x-user-id',
+    )
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'X-User-Roles',
+        in: 'header',
+        description:
+          'User roles([]) for internal API key authentication. This is used to identify the roles of the user making the request.',
+      },
+      'x-user-roles',
     )
     .build();
 };

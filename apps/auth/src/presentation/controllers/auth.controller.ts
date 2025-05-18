@@ -16,10 +16,12 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiResponse,
+  ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 
 @ApiTags('Auth')
+@ApiSecurity('x-internal-api-key')
 @ApiInternalHeaders()
 @Controller('auth')
 export class AuthController {

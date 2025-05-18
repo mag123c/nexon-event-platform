@@ -101,6 +101,7 @@ export class ClaimRewardUseCase {
 
     // 3. 유저 활동 데이터 조회 (실패 시 기록 및 예외 발생)
     const userActivity = await this.fetchUserActivityOrThrow(input);
+    this.logger.log('UESRACTIVITY', userActivity);
 
     const conditionMatchResult = this.validateEventCondition(
       input,
@@ -275,6 +276,24 @@ export class ClaimRewardUseCase {
     event: Event,
     userActivity: UserActivityData | null,
   ): EventConditionMatchResult {
+    if (!event.condition) {
+      this.logger.log(
+        `[validateEventCondition] 이벤트에 조건 없음: eventId=${event._id}`,
+      );
+      return {
+        allConditionsMet: true,
+        checkDetail: {
+          conditionDefinition: null as any, // 없다고 가정
+          conditionType: 'NO_CONDITION',
+          targetValue: null,
+          actualValue: null,
+          isMet: true,
+          checkedAt: new Date(),
+          message: '이벤트에 설정된 조건 없음',
+        },
+      };
+    }
+
     if (!userActivity) {
       // 조건은 있는데 유저 활동 데이터가 아예 없는 경우
       this.logger.warn(
@@ -303,89 +322,100 @@ export class ClaimRewardUseCase {
     input: ClaimRewardInput,
     event: Event,
     conditionMatchResult: EventConditionMatchResult,
-    // ): Promise<EventClaim> {
-  ): Promise<any> {
+  ): Promise<EventClaim> {
     const session = await this.mongoConnection.startSession();
     this.logger.debug(
       `[processClaimInTransaction] 트랜잭션 시작: userId=${input.userId}, eventId=${event._id}`,
     );
     try {
-      return await session.withTransaction(
-        async (currentSession: ClientSession) => {
-          const allRewards = await this.rewardRepository.findByEventId(
-            event._id.toHexString(),
-          );
-          const grantedRewardSnapshots: CreateEventClaimParams['eligibleRewardsSnapshots'] =
-            [];
+      let savedClaimInTransaction: EventClaim | undefined;
 
-          for (const reward of allRewards) {
-            let grantedThisReward = false;
-            if (reward.remainingQuantity === null) {
-              this.logger.debug(`[TX] Reward [${reward.name}] is unlimited.`);
-              grantedThisReward = true;
-            } else if (
-              reward.remainingQuantity !== undefined &&
-              reward.remainingQuantity > 0
-            ) {
-              const updated = await this.rewardRepository.decreaseQuantity(
-                reward._id.toHexString(),
-                1,
-                currentSession,
+      await session.withTransaction(async (currentSession: ClientSession) => {
+        const allRewards = await this.rewardRepository.findByEventId(
+          event._id.toHexString(),
+        );
+        const grantedRewardSnapshots: CreateEventClaimParams['eligibleRewardsSnapshots'] =
+          [];
+
+        for (const reward of allRewards) {
+          let grantedThisReward = false;
+          if (reward.remainingQuantity === null) {
+            this.logger.debug(`[TX] Reward [${reward.name}] is unlimited.`);
+            grantedThisReward = true;
+          } else if (
+            reward.remainingQuantity !== undefined &&
+            reward.remainingQuantity > 0
+          ) {
+            const updated = await this.rewardRepository.decreaseQuantity(
+              reward._id.toHexString(),
+              1,
+              currentSession,
+            );
+            if (updated) {
+              this.logger.debug(
+                `[TX] Reward [${updated.name}] quantity decreased. Remaining: ${updated.remainingQuantity}`,
               );
-              if (updated) {
-                this.logger.debug(
-                  `[TX] Reward [${updated.name}] quantity decreased. Remaining: ${updated.remainingQuantity}`,
-                );
-                grantedThisReward = true;
-              } else {
-                this.logger.warn(
-                  `[TX] Reward [${reward.name}] quantity decrease failed. Out of stock.`,
-                );
-              }
+              grantedThisReward = true;
             } else {
               this.logger.warn(
-                `[TX] Reward [${reward.name}] is out of stock or not applicable.`,
+                `[TX] Reward [${reward.name}] quantity decrease failed. Out of stock.`,
               );
             }
-
-            if (grantedThisReward) {
-              grantedRewardSnapshots.push({
-                rewardId: reward._id,
-                name: reward.name,
-                type: reward.type,
-                details: reward.details,
-              });
-            }
+          } else {
+            this.logger.warn(
+              `[TX] Reward [${reward.name}] is out of stock or not applicable.`,
+            );
           }
 
-          const finalStatus =
-            grantedRewardSnapshots.length > 0
-              ? ClaimStatus.SUCCESS
-              : ClaimStatus.FAILED_NO_REWARDS_AVAILABLE;
-          const failureReason =
-            finalStatus === ClaimStatus.FAILED_NO_REWARDS_AVAILABLE
-              ? '지급 가능한 보상이 모두 소진되었거나 대상이 아닙니다.'
-              : undefined;
-          this.logger.log(
-            `[TX] 보상 신청 처리 결과: userId=${input.userId}, eventId=${event._id}, status=${finalStatus}`,
-          );
+          if (grantedThisReward) {
+            grantedRewardSnapshots.push({
+              rewardId: reward._id,
+              name: reward.name,
+              type: reward.type,
+              details: reward.details,
+            });
+          }
+        }
 
-          const claimParams: CreateEventClaimParams = {
-            userId: input.userId,
-            eventId: event._id.toHexString(),
-            status: finalStatus,
-            eligibleRewardsSnapshots: grantedRewardSnapshots,
-            conditionCheckResult: conditionMatchResult.checkDetail,
-            failureReason: failureReason,
-            processedAt: new Date(),
-          };
-          const newClaim = this.eventClaimFactory.create(claimParams);
-          return await this.eventClaimRepository.saveInSession(
-            newClaim,
-            currentSession,
-          );
-        },
-      );
+        const finalStatus =
+          grantedRewardSnapshots.length > 0
+            ? ClaimStatus.SUCCESS
+            : ClaimStatus.FAILED_NO_REWARDS_AVAILABLE;
+        const failureReason =
+          finalStatus === ClaimStatus.FAILED_NO_REWARDS_AVAILABLE
+            ? '지급 가능한 보상이 모두 소진되었거나 대상이 아닙니다.'
+            : undefined;
+        this.logger.log(
+          `[TX] 보상 신청 처리 결과: userId=${input.userId}, eventId=${event._id}, status=${finalStatus}`,
+        );
+
+        const claimParams: CreateEventClaimParams = {
+          userId: input.userId,
+          eventId: event._id.toHexString(),
+          status: finalStatus,
+          eligibleRewardsSnapshots: grantedRewardSnapshots,
+          conditionCheckResult: conditionMatchResult.checkDetail,
+          failureReason: failureReason,
+          processedAt: new Date(),
+        };
+        const newClaim = this.eventClaimFactory.create(claimParams);
+        savedClaimInTransaction = await this.eventClaimRepository.saveInSession(
+          newClaim,
+          currentSession,
+        );
+      });
+
+      if (!savedClaimInTransaction) {
+        // 인지하지 못한 예외상황
+        this.logger.error(
+          '[processClaimInTransaction] 트랜잭션 내에서 클레임 저장 실패',
+        );
+        throw new DatabaseOperationException(
+          '트랜잭션 처리 후 클레임 정보를 가져오지 못했습니다.',
+        );
+      }
+
+      return savedClaimInTransaction;
     } catch (error: any) {
       this.logger.error(
         `[processClaimInTransaction] 트랜잭션 중 오류 발생: userId=${input.userId}, eventId=${event._id}, error=${error.message}`,

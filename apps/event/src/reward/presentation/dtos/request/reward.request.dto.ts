@@ -7,7 +7,6 @@ import {
   IsOptional,
   MinLength,
   MaxLength,
-  IsMongoId,
   IsNumber,
   IsInt,
   Min,
@@ -15,14 +14,6 @@ import {
 } from 'class-validator';
 
 export class CreateRewardRequestDto {
-  @ApiProperty({
-    example: 'event-object-id-string',
-    description: '보상이 속할 이벤트의 ID',
-  })
-  @IsNotEmpty()
-  @IsMongoId()
-  eventId!: string;
-
   @ApiProperty({
     example: '데일리 출석 보상 - 1000 마일리지',
     minLength: 2,

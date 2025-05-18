@@ -76,13 +76,14 @@ export class ClaimRewardResponseDto {
 
   static fromEntity(entity: EventClaim): ClaimRewardResponseDto {
     const dto = new ClaimRewardResponseDto();
-    dto.id = entity.id.toHexString();
-    dto.userId = entity.userId?.toHexString() ?? '';
-    dto.eventId = entity.eventId?.toHexString() ?? '';
+    console.log('TEST', entity);
+    dto.id = entity.id;
+    dto.userId = entity.userId.toString();
+    dto.eventId = entity.eventId.toString();
     dto.status = entity.status;
 
     dto.grantedRewards = entity.grantedRewards?.map((gr) => ({
-      rewardId: gr.rewardId.toHexString(),
+      rewardId: gr.rewardId.toString(),
       name: gr.name,
       type: gr.type,
       details: gr.details,
