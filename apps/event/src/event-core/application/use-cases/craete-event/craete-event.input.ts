@@ -7,7 +7,7 @@ export interface CreateEventInput {
   startDate: Date;
   endDate: Date;
   status?: EventStatus;
-  conditions: EventConditionInput[];
+  condition: EventConditionInput;
   requiresManualApproval?: boolean;
   createdBy: string;
 }

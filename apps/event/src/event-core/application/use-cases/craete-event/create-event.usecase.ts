@@ -32,7 +32,6 @@ export class CreateEventUseCase {
    * @throws EventAlreadyExistsException - 동일한 이름의 이벤트가 이미 존재할 경우
    * @throws InvalidEventPeriodException - 이벤트 시작일이 종료일보다 늦거나 같을 경우
    * @throws InvalidEventNameException - 이벤트 이름이 유효하지 않을 경우 (예: 길이 제한)
-   * @throws EventMustHaveConditionsException - 이벤트 조건이 하나도 없는 경우 (정책에 따라)
    * @throws UnsupportedEventConditionTypeException - 지원하지 않는 이벤트 조건 카테고리 또는 타입일 경우
    * @throws InvalidEventConditionValueException - 이벤트 조건의 값이 유효하지 않을 경우
    * @throws DatabaseOperationException - 데이터베이스 저장 중 오류 발생 시
@@ -59,7 +58,7 @@ export class CreateEventUseCase {
     }
 
     // 이벤트 조건 유효성 검사 (카테고리, 타입, 값 형식 등)
-    this.conditionsValidator.validate(input.conditions);
+    this.conditionsValidator.validate(input.condition);
 
     const newEvent = this.eventFactory.create(input, startDate, endDate);
 

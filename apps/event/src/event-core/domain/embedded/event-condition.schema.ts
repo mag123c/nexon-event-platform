@@ -1,10 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { EventConditionOperator } from '@app/event/event-core/domain/value-objects/event-condition-operator.vo';
 import { EventConditionCategory } from '@app/event/event-core/domain/value-objects/event-condition-category.vo';
-import { Document } from 'mongoose';
 
 @Schema({ _id: false, timestamps: false })
-export class EventCondition extends Document {
+export class EventCondition {
   @Prop({ required: true, type: String, enum: EventConditionCategory })
   category!: EventConditionCategory;
 

@@ -17,7 +17,7 @@ export type EventClaimData = Omit<
   userId: string;
   eventId: string;
   grantedRewards: Omit<GrantedReward, keyof Document>[];
-  conditionCheckDetails?: Omit<ConditionCheckResult, keyof Document>[];
+  conditionCheckDetail?: Omit<ConditionCheckResult, keyof Document>;
 };
 
 export enum ClaimStatus {

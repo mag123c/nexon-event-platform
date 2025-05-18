@@ -46,7 +46,6 @@ const mockRewardRepository: Partial<jest.Mocked<RewardRepository>> = {
 const mockEventRepository: jest.Mocked<EventRepository> = {
   findById: jest.fn(),
   findByName: jest.fn(),
-  findAll: jest.fn(),
   save: jest.fn(),
 };
 

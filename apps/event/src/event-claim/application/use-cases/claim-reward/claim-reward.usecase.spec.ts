@@ -46,7 +46,6 @@ import { EventConditionOperator } from '@app/event/event-core/domain/value-objec
 const mockEventRepo: jest.Mocked<EventRepository> = {
   findById: jest.fn(),
   findByName: jest.fn(),
-  findAll: jest.fn(),
   save: jest.fn(),
 };
 const mockRewardRepo: jest.Mocked<RewardRepository> = {
@@ -88,7 +87,7 @@ describe('ClaimRewardUseCase', () => {
       status: EventStatus.ACTIVE,
       startDate: new Date(Date.now() - 1000 * 60 * 60),
       endDate: new Date(Date.now() + 1000 * 60 * 60),
-      conditions: [] as any,
+      condition: {} as any,
       createdBy: new Types.ObjectId(),
     } as Event;
   };
@@ -155,14 +154,12 @@ describe('ClaimRewardUseCase', () => {
     it('모든 조건 충족 및 재고 있는 보상 지급 성공 시 SUCCESS 상태의 EventClaim 반환', async () => {
       const input = getBaseInput();
       const event = mockActiveEvent();
-      event.conditions = [
-        {
-          category: 'USER_ACTIVITY',
-          type: 'LOGIN_STREAK_DAYS',
-          operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
-          value: 3,
-        },
-      ] as any;
+      event.condition = {
+        category: 'USER_ACTIVITY',
+        type: 'LOGIN_STREAK_DAYS',
+        operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
+        value: 3,
+      } as any;
       const userActivity = mockUserActivity({ loginStreakDays: 5 });
       const reward1Id = new Types.ObjectId();
       const reward2Id = new Types.ObjectId();
@@ -296,14 +293,12 @@ describe('ClaimRewardUseCase', () => {
 
     it('이벤트 조건 미충족 시 ConditionsNotMetException 발생 및 실패 기록', async () => {
       const event = mockActiveEvent();
-      event.conditions = [
-        {
-          category: 'USER_ACTIVITY',
-          type: 'LOGIN_STREAK_DAYS',
-          operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
-          value: 10,
-        },
-      ] as any;
+      event.condition = {
+        category: 'USER_ACTIVITY',
+        type: 'LOGIN_STREAK_DAYS',
+        operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
+        value: 10,
+      } as any;
       const userActivity = mockUserActivity({ loginStreakDays: 5 }); // 조건 미충족
 
       mockEventRepo.findById.mockResolvedValue(event);

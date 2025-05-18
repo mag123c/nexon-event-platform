@@ -12,7 +12,7 @@ export interface CreateEventClaimParams {
     DomainGrantedReward,
     'rewardId' | 'name' | 'type' | 'details'
   >[];
-  conditionCheckResults?: EventConditionMatchDetail[];
+  conditionCheckResult?: EventConditionMatchDetail;
   failureReason?: string;
   requestedAt?: Date;
   processedAt?: Date;

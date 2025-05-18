@@ -102,7 +102,7 @@ export class ClaimRewardUseCase {
     // 3. 유저 활동 데이터 조회 (실패 시 기록 및 예외 발생)
     const userActivity = await this.fetchUserActivityOrThrow(input);
 
-    const conditionMatchResult = this.validateEventConditions(
+    const conditionMatchResult = this.validateEventCondition(
       input,
       event,
       userActivity,
@@ -119,7 +119,7 @@ export class ClaimRewardUseCase {
         input,
         ClaimStatus.FAILED_CONDITIONS_NOT_MET,
         failureReason,
-        conditionMatchResult.checkDetails,
+        conditionMatchResult.checkDetail,
       );
       throw new ConditionsNotMetException(input.eventId, logDetails);
     }
@@ -270,51 +270,41 @@ export class ClaimRewardUseCase {
     }
   }
 
-  private validateEventConditions(
+  private validateEventCondition(
     input: ClaimRewardInput,
     event: Event,
     userActivity: UserActivityData | null,
   ): EventConditionMatchResult {
-    if (!event.conditions || event.conditions.length === 0) {
-      return { allConditionsMet: true, checkDetails: [] };
-    }
-    if (!userActivity && event.conditions.length > 0) {
+    if (!userActivity) {
       // 조건은 있는데 유저 활동 데이터가 아예 없는 경우
       this.logger.warn(
         `[validateEventConditions] 유저 활동 데이터 없음: userId=${input.userId}, eventId=${event._id}`,
       );
-      // 모든 조건을 '미충족'으로 처리하거나, 특정 로직에 따라 처리
-      // 여기서는 모든 조건을 isMet: false로 설정하고 상세 메시지 추가
-      const details: EventConditionMatchDetail[] = event.conditions.map(
-        (cond) => ({
-          conditionDefinition: cond,
-          conditionType: `${cond.category}_${cond.type}`,
-          targetValue: cond.value,
-          actualValue: null,
-          isMet: false,
-          checkedAt: new Date(),
-          message: '유저 활동 데이터 없음',
-        }),
-      );
-      return { allConditionsMet: false, checkDetails: details };
+      const detail: EventConditionMatchDetail = {
+        conditionDefinition: event.condition,
+        conditionType: `${event.condition.category}_${event.condition.type}`,
+        targetValue: event.condition.value,
+        actualValue: null,
+        isMet: false,
+        checkedAt: new Date(),
+        message: '유저 활동 데이터 없음',
+      };
+
+      return { allConditionsMet: false, checkDetail: detail };
     }
-    return this.conditionMatcher.match(event.conditions, userActivity || {});
+    return this.conditionMatcher.match(event.condition, userActivity || {});
   }
 
   private formatConditionLogDetails(result: EventConditionMatchResult): string {
-    return result.checkDetails
-      .map(
-        (d) =>
-          `${d.conditionType}(target:${d.targetValue},actual:${d.actualValue}):${d.isMet}`,
-      )
-      .join('; ');
+    return `${result.checkDetail.conditionType}(target:${result.checkDetail.targetValue},actual:${result.checkDetail.actualValue}):${result.checkDetail.isMet}`;
   }
 
   private async processClaimInTransaction(
     input: ClaimRewardInput,
     event: Event,
     conditionMatchResult: EventConditionMatchResult,
-  ): Promise<EventClaim> {
+    // ): Promise<EventClaim> {
+  ): Promise<any> {
     const session = await this.mongoConnection.startSession();
     this.logger.debug(
       `[processClaimInTransaction] 트랜잭션 시작: userId=${input.userId}, eventId=${event._id}`,
@@ -385,12 +375,12 @@ export class ClaimRewardUseCase {
             eventId: event._id.toHexString(),
             status: finalStatus,
             eligibleRewardsSnapshots: grantedRewardSnapshots,
-            conditionCheckResults: conditionMatchResult.checkDetails,
+            conditionCheckResult: conditionMatchResult.checkDetail,
             failureReason: failureReason,
             processedAt: new Date(),
           };
           const newClaim = this.eventClaimFactory.create(claimParams);
-          return this.eventClaimRepository.saveInSession(
+          return await this.eventClaimRepository.saveInSession(
             newClaim,
             currentSession,
           );
@@ -423,7 +413,7 @@ export class ClaimRewardUseCase {
     input: ClaimRewardInput,
     status: ClaimStatus,
     failureReason: string,
-    conditionDetails: EventConditionMatchDetail[] = [],
+    conditionDetail?: EventConditionMatchDetail,
   ): Promise<void> {
     this.logger.log(
       `[recordFailedClaim] 실패 클레임 기록 시도: userId=${input.userId}, eventId=${input.eventId}, status=${status}, reason=${failureReason}`,
@@ -434,7 +424,7 @@ export class ClaimRewardUseCase {
         eventId: input.eventId,
         status: status,
         eligibleRewardsSnapshots: [],
-        conditionCheckResults: conditionDetails,
+        conditionCheckResult: conditionDetail,
         failureReason: failureReason,
         processedAt: new Date(),
       };

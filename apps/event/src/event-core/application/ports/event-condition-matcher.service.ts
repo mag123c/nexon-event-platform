@@ -13,7 +13,7 @@ export interface EventConditionMatchDetail {
 
 export interface EventConditionMatchResult {
   allConditionsMet: boolean;
-  checkDetails: EventConditionMatchDetail[];
+  checkDetail: EventConditionMatchDetail;
 }
 
 export const EVENT_CONDITION_MATCHER_SERVICE = Symbol(
@@ -23,12 +23,12 @@ export const EVENT_CONDITION_MATCHER_SERVICE = Symbol(
 export interface IEventConditionMatcherService {
   /**
    * 주어진 이벤트 조건들과 유저 활동 데이터를 비교하여 조건 충족 여부를 판단합니다.
-   * @param conditions - 검증할 EventCondition 배열
+   * @param condition - 검증할 EventCondition
    * @param userActivity - 유저의 활동 데이터
    * @returns EventConditionMatchResult 객체
    */
   match(
-    conditions: EventCondition[],
+    condition: EventCondition,
     userActivity: UserActivityData,
   ): EventConditionMatchResult;
 }

@@ -2,14 +2,6 @@ import { HttpStatus } from '@nestjs/common';
 import { BaseError } from '@app/common/errors/base.error';
 import { EventConditionCategory } from '@app/event/event-core/domain/value-objects/event-condition-category.vo';
 
-export class EventMustHaveConditionsException extends BaseError {
-  constructor(
-    message: string = '이벤트에는 최소 하나 이상의 조건이 필요합니다.',
-  ) {
-    super(HttpStatus.BAD_REQUEST, message, undefined, 'warn');
-  }
-}
-
 export class InvalidEventConditionValueException extends BaseError {
   constructor(
     category: EventConditionCategory,

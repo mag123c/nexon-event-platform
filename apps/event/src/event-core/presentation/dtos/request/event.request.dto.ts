@@ -11,9 +11,6 @@ import {
   MinLength,
   MaxLength,
   IsDateString,
-  IsArray,
-  ValidateNested,
-  ArrayMinSize,
   IsBoolean,
 } from 'class-validator';
 
@@ -26,7 +23,7 @@ export class EventConditionDto {
   @IsEnum(EventConditionCategory)
   category!: EventConditionCategory;
 
-  @ApiProperty({ example: 'LOGIN_COUNT' })
+  @ApiProperty({ example: 'LOGIN_STREAK_DAYS' })
   @IsNotEmpty()
   @IsString()
   type!: string;
@@ -82,7 +79,7 @@ export class CreateEventRequestDto {
   startDate!: string;
 
   @ApiProperty({
-    example: new Date().toISOString() + 1000 * 60 * 60 * 24,
+    example: new Date(Date.now() + 86400000).toISOString(),
     description: '이벤트 종료일 (default: 1일 후)',
   })
   @IsNotEmpty()
@@ -99,14 +96,12 @@ export class CreateEventRequestDto {
   status?: EventStatus;
 
   @ApiProperty({
-    type: [EventConditionDto],
-    description: '이벤트 달성 조건 목록',
+    type: EventConditionDto,
+    description: '이벤트 달성 조건',
   })
-  @IsArray()
-  @ValidateNested({ each: true })
+  @IsNotEmpty()
   @Type(() => EventConditionDto)
-  @ArrayMinSize(1)
-  conditions: EventConditionDto[] = [];
+  condition!: EventConditionDto;
 
   @ApiPropertyOptional({ example: false, default: false })
   @IsOptional()

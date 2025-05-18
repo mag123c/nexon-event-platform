@@ -31,6 +31,11 @@ export class UserActivityHttpFetcher implements UserActivityFetcher {
         this.httpService
           .get<UserActivityData>(apiUrl, {
             timeout: this.REQUEST_TIMEOUT,
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Internal-Api-Key': this.serviceConfig.apiKey,
+              'X-Uesr-Id': userId,
+            },
           })
           .pipe(
             timeout(this.REQUEST_TIMEOUT),

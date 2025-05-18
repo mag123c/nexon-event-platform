@@ -9,6 +9,7 @@ import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conne
 import { InternalApiAuthGuard } from '@app/common/guards/internal-api-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { USER_REPOSITORY } from '@app/auth/user/domain/ports/user.repository';
+import { GetUserUseCase } from '@app/auth/user/application/use-cases/get-user/get-user.usecase';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { USER_REPOSITORY } from '@app/auth/user/domain/ports/user.repository';
   ],
   controllers: [UserController],
   providers: [
+    GetUserUseCase,
     {
       provide: USER_REPOSITORY,
       useClass: UserMongoRepository,

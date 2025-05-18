@@ -2,7 +2,6 @@ import { UserActivityData } from '@app/auth/user/domain/entities/user.entity';
 import {
   IEventConditionMatcherService,
   EventConditionMatchResult,
-  EventConditionMatchDetail,
 } from '@app/event/event-core/application/ports/event-condition-matcher.service';
 import { EventCondition } from '@app/event/event-core/domain/embedded/event-condition.schema';
 import { EventConditionCategory } from '@app/event/event-core/domain/value-objects/event-condition-category.vo';
@@ -17,80 +16,72 @@ export class EventConditionMatcherService
 
   /**
    * 주어진 이벤트 조건들과 유저 활동 데이터를 비교하여 조건 충족 여부를 판단합니다.
-   * @param conditions
+   * @param condition
    * @param userActivity - 없을 수도 있음.
    * @returns EventConditionMatchResult
    */
   match(
-    conditions: EventCondition[],
+    condition: EventCondition,
     userActivity: UserActivityData | null,
   ): EventConditionMatchResult {
-    const checkDetails: EventConditionMatchDetail[] = [];
     let allConditionsMet = true;
-
-    if (!conditions || conditions.length === 0) {
-      return { allConditionsMet: true, checkDetails: [] };
-    }
 
     // 유저 활동 데이터가 전혀 없는 경우, 조건이 있다면 대부분 미충족으로 처리될 수 있음.
     const safeUserActivity = userActivity || {};
+    let actualValue: any;
+    let isMet = false;
+    const checkedAt = new Date();
+    let message: string | undefined;
 
-    for (const condition of conditions) {
-      let actualValue: any;
-      let isMet = false;
-      const checkedAt = new Date();
-      let message: string | undefined;
+    try {
+      actualValue = this.getActualValue(condition, safeUserActivity);
+    } catch (e: any) {
+      this.logger.warn(
+        `Failed to get actual value for condition type ${condition.type}: ${e.message}`,
+      );
+      actualValue = undefined;
+      message = e.message || '조건에 필요한 유저 활동 값을 가져올 수 없습니다.';
+    }
 
+    if (actualValue !== undefined) {
+      const targetValue = condition.value;
       try {
-        actualValue = this.getActualValue(condition, safeUserActivity);
+        isMet = this.compareValues(
+          actualValue,
+          targetValue,
+          condition.operator,
+        );
       } catch (e: any) {
         this.logger.warn(
-          `Failed to get actual value for condition type ${condition.type}: ${e.message}`,
+          `Failed to compare values for operator ${condition.operator}: ${e.message}`,
         );
-        actualValue = undefined;
-        message =
-          e.message || '조건에 필요한 유저 활동 값을 가져올 수 없습니다.';
+        message = message || e.message || '조건 값을 비교할 수 없습니다.';
+        isMet = false;
       }
-
-      if (actualValue !== undefined) {
-        const targetValue = condition.value;
-        try {
-          isMet = this.compareValues(
-            actualValue,
-            targetValue,
-            condition.operator,
-          );
-        } catch (e: any) {
-          this.logger.warn(
-            `Failed to compare values for operator ${condition.operator}: ${e.message}`,
-          );
-          message = message || e.message || '조건 값을 비교할 수 없습니다.';
-          isMet = false;
-        }
-      } else {
-        isMet = false; // 실제 값을 가져올 수 없었다면 조건 미충족
-        if (!message)
-          message = '조건 검증에 필요한 유저 활동 데이터를 찾을 수 없습니다.';
-      }
-
-      if (!isMet) {
-        allConditionsMet = false;
-        if (!message) {
-          message = `목표: ${this.operatorToString(condition.operator)} ${condition.value}, 실제: ${actualValue}`;
-        }
-      }
-
-      checkDetails.push({
-        conditionDefinition: condition,
-        conditionType: `${condition.category}_${condition.type}`,
-        targetValue: condition.value,
-        actualValue: actualValue,
-        isMet: isMet,
-        checkedAt: checkedAt,
-        message: message,
-      });
+    } else {
+      isMet = false; // 실제 값을 가져올 수 없었다면 조건 미충족
+      if (!message)
+        message = '조건 검증에 필요한 유저 활동 데이터를 찾을 수 없습니다.';
     }
-    return { allConditionsMet, checkDetails };
+
+    if (!isMet) {
+      allConditionsMet = false;
+      if (!message) {
+        message = `목표: ${this.operatorToString(condition.operator)} ${condition.value}, 실제: ${actualValue}`;
+      }
+    }
+
+    const checkDetail = {
+      conditionDefinition: condition,
+      conditionType: `${condition.category}_${condition.type}`,
+      targetValue: condition.value,
+      actualValue: actualValue,
+      isMet: isMet,
+      checkedAt: checkedAt,
+      message: message,
+    };
+
+    return { allConditionsMet, checkDetail };
   }
 
   private getActualValue(

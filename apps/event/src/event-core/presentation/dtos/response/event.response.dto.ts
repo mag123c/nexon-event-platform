@@ -38,8 +38,8 @@ export class EventResponseDto {
   @ApiProperty({ enum: EventStatus })
   status!: EventStatus;
 
-  @ApiProperty({ type: [EventConditionResponseDto] })
-  conditions!: EventConditionResponseDto[];
+  @ApiProperty({ type: EventConditionResponseDto })
+  condition!: EventConditionResponseDto;
 
   @ApiProperty()
   requiresManualApproval!: boolean;
@@ -64,14 +64,7 @@ export class EventResponseDto {
     dto.startDate = entity.startDate;
     dto.endDate = entity.endDate;
     dto.status = entity.status;
-    dto.conditions = entity.conditions.map((c) => ({
-      category: c.category,
-      type: c.type,
-      operator: c.operator,
-      value: c.value,
-      unit: c.unit,
-      description: c.description,
-    }));
+    dto.condition = entity.condition;
     dto.requiresManualApproval = entity.requiresManualApproval;
     dto.createdBy = entity.createdBy.toHexString();
     dto.createdAt = entity.createdAt;

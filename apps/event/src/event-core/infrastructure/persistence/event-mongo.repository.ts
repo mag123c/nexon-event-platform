@@ -14,15 +14,19 @@ export class EventMongoRepository implements EventRepository {
   ) {}
 
   async findById(id: string): Promise<Event | null> {
-    return this.eventModel.findById(id).exec();
+    const eventDoc = await this.eventModel.findById(id).lean().exec();
+    if (!eventDoc) {
+      return null;
+    }
+
+    const condition = eventDoc?.condition;
+    eventDoc.condition =
+      typeof condition === 'string' ? JSON.parse(condition) : condition;
+    return eventDoc;
   }
 
   async findByName(name: string): Promise<Event | null> {
-    return this.eventModel.findOne({ name }).exec();
-  }
-
-  async findAll(): Promise<Event[]> {
-    throw new Error('Method not implemented.');
+    return this.eventModel.findOne({ name }).lean();
   }
 
   async save(event: Event): Promise<Event> {

@@ -1,9 +1,8 @@
-import { Event } from '../entities/event.entity';
+import { Event } from '@app/event/event-core/domain/entities/event.entity';
 
 export interface EventRepository {
   findById(id: string): Promise<Event | null>;
   findByName(name: string): Promise<Event | null>;
-  findAll(): Promise<Event[]>;
   save(event: Event): Promise<Event>;
 }
 

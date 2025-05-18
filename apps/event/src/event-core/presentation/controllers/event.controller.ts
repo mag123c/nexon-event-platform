@@ -42,14 +42,7 @@ export class EventController {
       startDate: new Date(createEventDto.startDate),
       endDate: new Date(createEventDto.endDate),
       status: createEventDto.status,
-      conditions: createEventDto.conditions.map((c) => ({
-        category: c.category,
-        type: c.type,
-        operator: c.operator,
-        value: c.value,
-        unit: c.unit,
-        description: c.description,
-      })),
+      condition: createEventDto.condition,
       requiresManualApproval: createEventDto.requiresManualApproval,
       createdBy: currentUser.id,
     };

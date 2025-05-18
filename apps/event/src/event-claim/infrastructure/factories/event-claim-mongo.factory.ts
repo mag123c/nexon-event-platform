@@ -18,16 +18,7 @@ export class EventClaimMongoFactory implements EventClaimFactory {
         type: snapshot.type,
         details: snapshot.details,
       })),
-      conditionCheckDetails: params.conditionCheckResults
-        ? params.conditionCheckResults.map((detail) => ({
-            conditionType: detail.conditionType,
-            targetValue: detail.targetValue,
-            actualValue: detail.actualValue,
-            isMet: detail.isMet,
-            checkedAt: detail.checkedAt,
-            message: detail.message,
-          }))
-        : undefined,
+      conditionCheckDetail: params.conditionCheckResult,
       failureReason: params.failureReason,
       requestedAt: params.requestedAt || new Date(),
       processedAt: params.processedAt,

@@ -46,8 +46,8 @@ export class Event {
   })
   status: EventStatus = EventStatus.SCHEDULED;
 
-  @Prop({ type: [EventConditionSchema], default: [] })
-  conditions!: Types.DocumentArray<EventCondition>;
+  @Prop({ type: EventConditionSchema })
+  condition!: EventCondition;
 
   @Prop({ type: Boolean, default: false })
   requiresManualApproval: boolean = false;

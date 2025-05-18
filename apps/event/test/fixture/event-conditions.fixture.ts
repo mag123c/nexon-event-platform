@@ -47,12 +47,6 @@ export const returningUserLastLoginConditionFixture: EventConditionInput = {
   description: '마지막 접속 후 30일 이상 경과한 복귀 유저',
 };
 
-// 다양한 조건 조합 Fixture
-export const combinedConditionsFixture: EventConditionInput[] = [
-  loginCountConditionFixture,
-  friendInvitationConditionFixture,
-];
-
 // 유효하지 않은 조건 Fixture (단위 테스트용)
 export const invalidCategoryConditionFixture: EventConditionInput = {
   category: 'INVALID_CATEGORY' as EventConditionCategory,

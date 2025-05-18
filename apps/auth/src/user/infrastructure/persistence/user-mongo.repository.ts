@@ -13,7 +13,7 @@ export class UserMongoRepository implements UserRepository {
   ) {}
 
   async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(new Types.ObjectId(id)).exec();
+    return this.userModel.findById(new Types.ObjectId(id)).lean();
   }
 
   async findByEmail(email: string): Promise<User | null> {

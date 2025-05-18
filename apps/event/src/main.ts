@@ -13,6 +13,7 @@ async function bootstrap() {
     bufferLogs: true,
     logger: ['log', 'error', 'warn', 'debug'],
   });
+
   const port = process.env.EVENT_PORT || 6173;
 
   app.useGlobalFilters(new HttpExceptionFilter());
