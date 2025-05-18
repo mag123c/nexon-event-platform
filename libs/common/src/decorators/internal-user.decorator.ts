@@ -1,3 +1,0 @@
-import { JwtPayload } from '../interfaces/jwt-payload.interface';
-
-export interface InternalUserContext extends Omit<JwtPayload, 'email'> {}

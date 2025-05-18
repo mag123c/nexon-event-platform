@@ -65,7 +65,7 @@ export class InternalApiAuthGuard implements CanActivate {
       throw new InvalidInternalApiKeyException();
     }
 
-    // API KEY가 유효한 경우, 사용자 ID와 역할을 설정합니다.
+    // API KEY가 유효한 경우, 사용자 ID와 역할을 주입
     const userId = request.headers[CustomHeaders.USER_ID.toLowerCase()];
     const rolesHeader = request.headers[CustomHeaders.USER_ROLES.toLowerCase()];
 
