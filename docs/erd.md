@@ -101,18 +101,18 @@
 | `_id`                    | `ObjectId`   | PK                                                                                  | 자동 생성                 |
 | `userId`                 | `ObjectId`   | 요청 사용자 ID (`users._id` 참조)                                                     |                            |
 | `eventId`                | `ObjectId`   | 요청 이벤트 ID (`event._id` 참조)                                                    |                            |
-| `grantedReward`          | `Object`     | 실제로 지급 확정된 보상 정보 (스냅샷). 아래 `GrantedReward` 구조 참조.                  |                            |
+| `grantedRewards`         | `[Object]`   | 실제로 지급 확정된 보상 정보 (스냅샷). 아래 `GrantedRewards` 구조 참조.                       |                            |
 | `status`                 | `String`     | 요청 처리 상태 (`REQUESTED`, `SUCCESS`, `FAILED_CONDITIONS_NOT_MET` 등)             |                            |
-| `conditionCheckDetails`  | `[Object]`   | 조건 검증 결과 상세 객체 배열. 각 객체는 `ConditionCheckResult` 구조 참조.           | 디버깅/감사용               |
+| `conditionCheckDetail`   | `Object`     | 조건 검증 결과 상세 객체 각 객체는 `ConditionCheckResult` 구조 참조.                          | 디버깅/감사용               |
 | `failureReason`          | `String`     | 지급 실패 시 상세 사유                                                                  |                            |
 | `requestedAt`            | `Date`       | 사용자 요청 시각                                                                        |                            |
 | `processedAt`            | `Date`       | (선택적) 최종 처리(성공/실패) 완료 시각                                                  |                            |
 | `createdAt`              | `Date`       | 생성 일시                                                                              |                            |
 | `updatedAt`              | `Date`       | 마지막 수정 일시 (주로 `status` 변경 시)                                               |                            |
 
-### `GrantedReward` (임베디드 객체) 구조
+### `GrantedRewards` (임베디드 객체) 구조
 
-`event_claims` 컬렉션의 `grantedReward` 객체 구조입니다. 지급 시점의 보상 정보를 저장합니다.
+`event_claims` 컬렉션의 `grantedRewards` 배열의 각 객체 구조입니다.
 
 | 필드명      | 타입     | 설명                               |
 |-------------|----------|------------------------------------|
@@ -123,7 +123,7 @@
 
 ### `ConditionCheckResult` (임베디드 객체) 구조
 
-`event_claims` 컬렉션의 `conditionCheckDetails` 배열 내 각 객체의 구조입니다.
+`event_claims` 컬렉션의 `conditionCheckDetail` 객체 구조입니다. 이벤트의 condition이 배열화되면 같이 배열로 변경해야합니다.
 
 | 필드명          | 타입     | 설명                               |
 |-----------------|----------|------------------------------------|
