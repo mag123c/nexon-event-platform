@@ -8,6 +8,8 @@ import {
   HttpStatus,
   Param,
   Body,
+  Get,
+  Query,
 } from '@nestjs/common';
 
 import { CreateRewardRequestDto } from '@app/event/reward/presentation/dtos/request/reward.request.dto';
@@ -23,14 +25,20 @@ import {
   ApiCreatedResponse,
   ApiResponse,
   ApiSecurity,
+  ApiQuery,
 } from '@nestjs/swagger';
+import { ListRewardsQueryDto } from '@app/event/reward/presentation/dtos/request/list-rewards.query.dto';
+import { ListRewardsByEventIdUseCase } from '@app/event/reward/application/use-cases/list-rewards-by-event-id/list-rewards-by-event-id.usecase';
 
 @ApiTags('Event - Rewards')
 @ApiSecurity('x-internal-api-key')
 @ApiInternalHeaders()
 @Controller('rewards')
 export class RewardController {
-  constructor(private readonly createRewardUseCase: CreateRewardUseCase) {}
+  constructor(
+    private readonly createRewardUseCase: CreateRewardUseCase,
+    private readonly listRewardsByEventIdUseCase: ListRewardsByEventIdUseCase,
+  ) {}
 
   @Post(':eventId')
   @HttpCode(HttpStatus.CREATED)
@@ -75,5 +83,34 @@ export class RewardController {
 
     const createdReward = await this.createRewardUseCase.execute(useCaseInput);
     return RewardResponseDto.fromEntity(createdReward);
+  }
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '특정 이벤트에 연결된 보상 목록 조회' })
+  @ApiQuery({
+    name: 'eventId',
+    required: true,
+    type: String,
+    description: '이벤트 ID',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: '보상 목록 조회 성공',
+    type: [RewardResponseDto],
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: '해당 eventId의 이벤트를 찾을 수 없음',
+  })
+  async listRewardsForEvent(
+    @Query() queryDto: ListRewardsQueryDto,
+  ): Promise<RewardResponseDto[]> {
+    const { rewards } = await this.listRewardsByEventIdUseCase.execute({
+      eventId: queryDto.eventId,
+    });
+    return rewards.map((rewardData) =>
+      RewardResponseDto.fromRewardData(rewardData),
+    );
   }
 }

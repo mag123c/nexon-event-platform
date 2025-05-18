@@ -54,4 +54,12 @@ export class RewardResponseDto {
     dto.updatedAt = entity.updatedAt;
     return dto;
   }
+
+  static fromRewardData(data: Reward): RewardResponseDto {
+    const dto = new RewardResponseDto();
+    dto.id = data._id.toHexString();
+    dto.eventId = data.eventId.toHexString();
+    dto.name = data.name;
+    return dto;
+  }
 }

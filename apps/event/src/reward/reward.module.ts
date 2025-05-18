@@ -2,6 +2,7 @@ import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conne
 import { EventCoreModule } from '@app/event/event-core/event-core.module';
 import { RewardDetailsValidatorService } from '@app/event/reward/application/services/reward-details-validator.service';
 import { CreateRewardUseCase } from '@app/event/reward/application/use-cases/create-reward/create-reward.usecase';
+import { ListRewardsByEventIdUseCase } from '@app/event/reward/application/use-cases/list-rewards-by-event-id/list-rewards-by-event-id.usecase';
 import {
   Reward,
   RewardSchema,
@@ -28,6 +29,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     { provide: REWARD_FACTORY, useClass: RewardMongoFactory },
     RewardDetailsValidatorService,
     CreateRewardUseCase,
+    ListRewardsByEventIdUseCase,
   ],
   exports: [REWARD_REPOSITORY, REWARD_FACTORY],
 })
