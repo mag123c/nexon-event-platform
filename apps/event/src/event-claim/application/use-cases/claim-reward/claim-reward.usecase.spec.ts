@@ -12,8 +12,8 @@ import {
 import {
   EVENT_CLAIM_REPOSITORY,
   EventClaimRepository,
-} from '@app/event/event-claim/domain/event-claim/ports/event-claim.repository';
-import { EVENT_CLAIM_FACTORY } from '@app/event/event-claim/domain/event-claim/factories/event-claim.factory';
+} from '@app/event/event-claim/domain/ports/event-claim.repository';
+import { EVENT_CLAIM_FACTORY } from '@app/event/event-claim/domain/factories/event-claim.factory';
 import {
   USER_ACTIVITY_FETCHER,
   UserActivityFetcher,
@@ -24,7 +24,7 @@ import { Reward } from '@app/event/reward/domain/entities/reward.entity';
 import {
   ClaimStatus,
   EventClaim,
-} from '@app/event/event-claim/domain/event-claim/entities/event-claim.entity';
+} from '@app/event/event-claim/domain/entities/event-claim.entity';
 import { EventStatus } from '@app/event/event-core/domain/value-objects/event-status.vo';
 import { EventClaimMongoFactory } from '@app/event/event-claim/infrastructure/factories/event-claim-mongo.factory';
 import { EventConditionMatcherService } from '@app/event/event-core/application/services/event-condition-matcher.service';
@@ -34,7 +34,7 @@ import {
   EventNotClaimableException,
   EventNotFoundForClaimException,
   NoRewardsAvailableException,
-} from '@app/event/event-claim/domain/event-claim/errors/event-claim.exception';
+} from '@app/event/event-claim/domain/errors/event-claim.exception';
 import { DatabaseOperationException } from '@app/common/errors/database-operation.exception';
 import { ExternalServiceCommsException } from '@app/common/errors/external-service.exception';
 import { MONGO_CONNECTIONS } from '@app/common/database/moongoose/mongoose-conneciton.token';
@@ -62,6 +62,7 @@ const mockClaimRepo: jest.Mocked<EventClaimRepository> = {
   findSuccessfulClaim: jest.fn(),
   save: jest.fn(),
   saveInSession: jest.fn(),
+  findAllWithPagination: jest.fn(),
 };
 const mockUserActivityFetcher: jest.Mocked<UserActivityFetcher> = {
   fetchByUserId: jest.fn(),

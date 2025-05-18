@@ -1,24 +1,13 @@
 import {
   ConditionCheckResult,
   ConditionCheckResultSchema,
-} from '@app/event/event-claim/domain/event-claim/embedded/condition-checklist.schema';
+} from '@app/event/event-claim/domain/embedded/condition-checklist.schema';
 import {
   GrantedReward,
   GrantedRewardSchema,
-} from '@app/event/event-claim/domain/event-claim/embedded/grant-rewards.schema';
+} from '@app/event/event-claim/domain/embedded/grant-rewards.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-
-export type EventClaimData = Omit<
-  EventClaim,
-  keyof Document | '_id' | 'id' | 'userId' | 'eventId'
-> & {
-  _id?: Types.ObjectId | string;
-  userId: string;
-  eventId: string;
-  grantedRewards: Omit<GrantedReward, keyof Document>[];
-  conditionCheckDetail?: Omit<ConditionCheckResult, keyof Document>;
-};
 
 export enum ClaimStatus {
   REQUESTED = 'REQUESTED',

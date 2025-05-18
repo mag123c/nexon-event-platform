@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { EventClaimData } from '@app/event/event-claim/domain/event-claim/entities/event-claim.entity';
 import {
   EventClaimFactory,
   CreateEventClaimParams,
-} from '@app/event/event-claim/domain/event-claim/factories/event-claim.factory';
+} from '@app/event/event-claim/domain/factories/event-claim.factory';
+import { EventClaimData } from '@app/event/event-claim/domain/interfaces/event-claim-data.interface';
 
 @Injectable()
 export class EventClaimMongoFactory implements EventClaimFactory {
-  create(params: CreateEventClaimParams): EventClaimData {
-    const eventClaimDataObject: EventClaimData = {
+  create(params: CreateEventClaimParams): Omit<EventClaimData, '_id'> {
+    const eventClaimDataObject: Omit<EventClaimData, '_id'> = {
       userId: params.userId,
       eventId: params.eventId,
       status: params.status,

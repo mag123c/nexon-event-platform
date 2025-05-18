@@ -29,6 +29,8 @@ import {
 } from '@nestjs/swagger';
 import { ListRewardsQueryDto } from '@app/event/reward/presentation/dtos/request/list-rewards.query.dto';
 import { ListRewardsByEventIdUseCase } from '@app/event/reward/application/use-cases/list-rewards-by-event-id/list-rewards-by-event-id.usecase';
+import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
+import { Role } from '@app/auth/domain/value-objects/role.vo';
 
 @ApiTags('Event - Rewards')
 @ApiSecurity('x-internal-api-key')
@@ -42,6 +44,7 @@ export class RewardController {
 
   @Post(':eventId')
   @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.ADMIN, Role.OPERATOR)
   @ApiSecurity('x-user-id')
   @ApiOperation({ summary: '이벤트에 보상 생성' })
   @ApiBody({ type: CreateRewardRequestDto })

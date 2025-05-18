@@ -17,23 +17,23 @@ import { ClaimRewardInput } from '@app/event/event-claim/application/use-cases/c
 import {
   EventClaim,
   ClaimStatus,
-} from '@app/event/event-claim/domain/event-claim/entities/event-claim.entity';
+} from '@app/event/event-claim/domain/entities/event-claim.entity';
 import {
   AlreadyClaimedException,
   ConditionsNotMetException,
   EventNotClaimableException,
   EventNotFoundForClaimException,
   NoRewardsAvailableException,
-} from '@app/event/event-claim/domain/event-claim/errors/event-claim.exception';
+} from '@app/event/event-claim/domain/errors/event-claim.exception';
 import {
   CreateEventClaimParams,
   EVENT_CLAIM_FACTORY,
   EventClaimFactory,
-} from '@app/event/event-claim/domain/event-claim/factories/event-claim.factory';
+} from '@app/event/event-claim/domain/factories/event-claim.factory';
 import {
   EVENT_CLAIM_REPOSITORY,
   EventClaimRepository,
-} from '@app/event/event-claim/domain/event-claim/ports/event-claim.repository';
+} from '@app/event/event-claim/domain/ports/event-claim.repository';
 import { Event } from '@app/event/event-core/domain/entities/event.entity';
 import {
   EVENT_REPOSITORY,

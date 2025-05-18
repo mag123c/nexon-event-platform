@@ -34,6 +34,8 @@ import { PaginatedEventsResponseDto } from '@app/event/event-core/presentation/d
 import { GetEventByIdUseCase } from '@app/event/event-core/application/use-cases/get-event-by-id/get-event-by-id.usecase';
 import { ListEventsUseCase } from '@app/event/event-core/application/use-cases/list-event/list-event.usecase';
 import { ListEventsUseCaseOutput } from '@app/event/event-core/application/use-cases/list-event/list-event.output';
+import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
+import { Role } from '@app/auth/domain/value-objects/role.vo';
 
 @ApiTags('Event')
 @ApiSecurity('x-internal-api-key')
@@ -48,6 +50,7 @@ export class EventController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.ADMIN, Role.OPERATOR)
   @ApiSecurity('x-user-id')
   @ApiOperation({ summary: '이벤트 생성' })
   @ApiBody({ type: CreateEventRequestDto })
