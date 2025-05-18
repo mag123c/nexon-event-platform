@@ -16,6 +16,8 @@ import { HttpModule } from '@nestjs/axios';
 import { authServiceConfig } from '@app/event/config/services.config';
 import { ConfigModule } from '@nestjs/config';
 import { EventConditionMatcherService } from '@app/event/event-core/application/services/event-condition-matcher.service';
+import { ListEventsUseCase } from '@app/event/event-core/application/use-cases/list-event/list-event.usecase';
+import { GetEventByIdUseCase } from '@app/event/event-core/application/use-cases/get-event-by-id/get-event-by-id.usecase';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { EventConditionMatcherService } from '@app/event/event-core/application/
       useClass: EventConditionMatcherService,
     },
     CreateEventUseCase,
+    ListEventsUseCase,
+    GetEventByIdUseCase,
     EventConditionsValidatorService,
   ],
   exports: [

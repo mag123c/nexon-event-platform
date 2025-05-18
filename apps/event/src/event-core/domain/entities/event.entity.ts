@@ -47,7 +47,7 @@ export class Event {
   status: EventStatus = EventStatus.SCHEDULED;
 
   @Prop({ type: EventConditionSchema })
-  condition!: EventCondition;
+  condition?: EventCondition;
 
   @Prop({ type: Boolean, default: false })
   requiresManualApproval: boolean = false;

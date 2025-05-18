@@ -39,7 +39,7 @@ export class EventResponseDto {
   status!: EventStatus;
 
   @ApiProperty({ type: EventConditionResponseDto })
-  condition!: EventConditionResponseDto;
+  condition?: EventConditionResponseDto;
 
   @ApiProperty()
   requiresManualApproval!: boolean;
