@@ -95,7 +95,6 @@ export class ClaimRewardUseCase {
 
     // 3. 유저 활동 데이터 조회 (실패 시 기록 및 예외 발생)
     const userActivity = await this.fetchUserActivityOrThrow(input);
-    this.logger.log('UESRACTIVITY', userActivity);
 
     const conditionMatchResult = this.validateEventCondition(
       input,
