@@ -23,6 +23,7 @@ import {
   ApiResponse,
   ApiSecurity,
   ApiQuery,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { ListRewardsQueryDto } from '@app/event/reward/presentation/dtos/request/list-rewards.query.dto';
 import { ListRewardsByEventIdUseCase } from '@app/event/reward/application/use-cases/list-rewards-by-event-id/list-rewards-by-event-id.usecase';
@@ -55,20 +56,23 @@ export class RewardController {
     type: RewardResponseDto,
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description: '잘못된 요청 (DTO 유효성, 비즈니스 규칙 위반 등)',
   })
   @ApiResponse({
-    status: 401,
-    description: '인증 실패 (내부 API 키 누락/오류)',
+    status: HttpStatus.UNAUTHORIZED,
+    description: '인증 실패 (필수 헤더 전달 누락)',
   })
   @ApiResponse({
-    status: 403,
+    status: HttpStatus.FORBIDDEN,
     description: '권한 없음 (예: 일반 유저가 생성 시도)',
   })
-  @ApiResponse({ status: 404, description: '이벤트를 찾을 수 없음' })
   @ApiResponse({
-    status: 409,
+    status: HttpStatus.NOT_FOUND,
+    description: '이벤트를 찾을 수 없음',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
     description: '이미 동일한 보상 존재 (이름 또는 내용 기준)',
   })
   async createRewardForEvent(
@@ -99,8 +103,7 @@ export class RewardController {
     type: String,
     description: '이벤트 ID',
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: '보상 목록 조회 성공',
     type: [RewardResponseDto],
   })

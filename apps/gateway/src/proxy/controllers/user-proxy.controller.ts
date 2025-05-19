@@ -19,9 +19,11 @@ import {
   ApiParam,
   ApiResponse,
   ApiBearerAuth,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import gatewayConfig from '@app/gateway/config/gateway-proxy.config';
 import { Request, Response } from 'express';
+import { UserActivityResponseDto } from '@app/auth/user/presentation/dtos/response/user-activity.response.dto';
 
 @ApiTags('Gateway - Auth Service Proxy')
 @ApiBearerAuth('accessToken')
@@ -54,13 +56,11 @@ export class UserProxyController {
   })
   @ApiParam({
     name: 'userId',
-    description: '조회할 유저의 ID',
+    description: '조회할 유저의 ID (ObjectId string)',
     type: String,
-    required: true,
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: '성공',
+  @ApiOkResponse({
+    type: UserActivityResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -68,7 +68,7 @@ export class UserProxyController {
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description: '인증/인가 실패 (게이트웨이 또는 Auth 서버)',
+    description: 'API 키 인증 실패',
   })
   @UseGuards(JwtAuthGuard)
   @Get(':userId/activity-data')

@@ -21,6 +21,7 @@ import {
   ApiSecurity,
   ApiParam,
   ApiQuery,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { ApiInternalHeaders } from '@app/common/decorators/api-internal-headers.decorator';
 import { EventStatus } from '@app/event/event-core/domain/value-objects/event-status.vo';
@@ -56,9 +57,16 @@ export class EventController {
   @ApiCreatedResponse({
     type: EventResponseDto,
   })
-  @ApiResponse({ status: 400, description: 'Bad Request.' })
-  @ApiResponse({ status: 401, description: 'Unauthorized.' })
-  @ApiResponse({ status: 403, description: 'Forbidden (Insufficient role).' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description:
+      '생성에 필요한 유효성 검사 실패(시작 - 종료일, 설정된 카테고리 - 타입 - 값 등)',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: '인가 실패(내부 헤더)',
+  })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: '권한 없음' })
   async createEvent(
     @Body() createEventDto: CreateEventRequestDto,
     @CurrentUser() currentUser: InternalUserContext,
@@ -79,7 +87,6 @@ export class EventController {
   }
 
   @Get()
-  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '이벤트 목록 조회' })
   @ApiQuery({
     name: 'name',
@@ -93,8 +100,7 @@ export class EventController {
     enum: EventStatus,
     description: '이벤트 상태 필터',
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: '이벤트 목록 조회 성공',
     type: PaginatedEventsResponseDto,
   })
@@ -120,14 +126,12 @@ export class EventController {
   }
 
   @Get(':eventId')
-  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '이벤트 상세 조회' })
   @ApiParam({
     name: 'eventId',
     description: '조회할 이벤트의 ID (ObjectId string)',
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: '이벤트 상세 조회 성공',
     type: EventDetailResponseDto,
   })

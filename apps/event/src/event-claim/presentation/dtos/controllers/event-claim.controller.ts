@@ -27,6 +27,7 @@ import {
   ApiCreatedResponse,
   ApiSecurity,
   ApiParam,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { ListAllEventClaimsUseCaseInput } from '@app/event/event-claim/application/use-cases/list-all-event-claims/list-all-event-claims.input';
 import { ListAllEventClaimsQueryDto } from '@app/event/event-claim/presentation/dtos/request/list-all-event-claims.query.dto';
@@ -99,12 +100,10 @@ export class EventClaimController {
   @Get('me')
   @UseGuards(RolesGuard)
   @Roles(Role.USER)
-  @HttpCode(HttpStatus.OK)
   @ApiSecurity('x-user-id')
   @ApiSecurity('x-user-roles')
   @ApiOperation({ summary: '내 보상 요청 이력 조회' })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: '내 보상 요청 이력 조회 성공',
     type: PaginatedEventClaimsResponseDto,
   })
@@ -149,14 +148,12 @@ export class EventClaimController {
   @Get('admin')
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN, Role.OPERATOR, Role.AUDITOR)
-  @HttpCode(HttpStatus.OK)
   @ApiSecurity('x-user-id')
   @ApiSecurity('x-user-roles')
   @ApiOperation({
     summary: '전체 또는 필터링된 보상 요청 이력 조회 (관리자용)',
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: '보상 요청 이력 조회 성공',
     type: PaginatedEventClaimsResponseDto,
   })

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiOperation,
@@ -21,7 +21,6 @@ export class UserController {
   constructor(private readonly getUserUseCase: GetUserUseCase) {}
 
   @Get('activity-data')
-  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: '특정 유저의 활동 데이터 조회 (내부 서비스용)' })
   @ApiParam({
     name: 'userId',
