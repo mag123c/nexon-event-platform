@@ -1,8 +1,7 @@
 # Nexon Event Platform
 
-> 이벤트/보상 관리 시스템 - NestJS Monorepo 기반 백엔드 과제
+- 이벤트/보상 관리 시스템 - NestJS Monorepo 기반 백엔드 과제
 
----
 
 ## 🧱 프로젝트 구조
 
@@ -19,7 +18,7 @@ libs/
 ```
 
 - 추가적인 프로젝트 디렉토리 구조에 관한 설명은 [architecture.md](./architecture.md)를 참조해주세요.
---- 
+
 
 ## ⚙️ 품질 관리
 
@@ -32,7 +31,6 @@ libs/
 → `main` 브랜치에서는 커밋 전 자동 테스트도 수행됩니다.
 
 
---
 
 ## 📋 요구사항 분석
 
