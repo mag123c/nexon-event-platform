@@ -51,7 +51,7 @@ describe('EventClaimController (E2E)', () => {
   let authDbConnection: Connection;
   let eventClaimModel: Model<EventClaimDocument>;
   let eventModel: Model<EventDocument>;
-  let authUserModel: Model<UserDocument>;
+  let useModel: Model<UserDocument>;
 
   const VALID_INTERNAL_API_KEY =
     process.env.GATEWAY_INTERNAL_API_KEY || 'E2E_TEST_API_KEY_FOR_EVENT_APP';
@@ -93,7 +93,7 @@ describe('EventClaimController (E2E)', () => {
     eventModel = moduleFixture.get<Model<EventDocument>>(
       getModelToken(Event.name, MONGO_CONNECTIONS.EVENT),
     );
-    authUserModel = moduleFixture.get<Model<UserDocument>>(
+    useModel = moduleFixture.get<Model<UserDocument>>(
       getModelToken(User.name, MONGO_CONNECTIONS.AUTH),
     );
   });
@@ -101,9 +101,9 @@ describe('EventClaimController (E2E)', () => {
   beforeEach(async () => {
     await eventClaimModel.deleteMany({});
     await eventModel.deleteMany({});
-    await authUserModel.deleteMany({});
+    await useModel.deleteMany({});
 
-    await authUserModel.insertMany(
+    await useModel.insertMany(
       allUserFixturesForE2E.map((u) => ({ ...u, password: 'hashedPassword' })),
     );
 

@@ -21,7 +21,7 @@ export class InvalidEventConditionValueException extends BaseError {
 export class UnsupportedEventConditionTypeException extends BaseError {
   constructor(category: EventConditionCategory, type: string) {
     super(
-      HttpStatus.CONFLICT,
+      HttpStatus.BAD_REQUEST,
       `지원하는 이벤트 조건 타입이 아닙니다. category: ${category}, type: ${type}`,
       undefined,
       'warn',
