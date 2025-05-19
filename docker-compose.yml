@@ -1,5 +1,28 @@
 version: '3.8'
 services:
+  gateway_app_dev:
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+    container_name: gateway_app_dev
+    ports:
+      - '4173:4173'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - ./.env.development
+    environment:
+      - NODE_ENV=development
+      - AUTH_SERVICE_URL=http://auth_app_dev:5173
+      - EVENT_SERVICE_URL=http://event_app_dev:6173
+      - GATEWAY_INTERNAL_API_KEY=DEV!!
+    depends_on:
+      - auth_app_dev
+      - event_app_dev
+    networks:
+      - dev_network
+
   auth_app_dev:
     build:
       context: .
@@ -15,6 +38,8 @@ services:
     environment:
       - NODE_ENV=development
       - AUTH_MONGODB_URI=mongodb://auth_mongo_dev:27017/auth_db_dev
+      - GATEWAY_SERVICE_URL=http://gateway_app_dev:4173
+      - GATEWAY_PORT=4173
     depends_on:
       - auth_mongo_dev
     networks:
@@ -36,6 +61,8 @@ services:
       - NODE_ENV=development
       - EVENT_MONGODB_URI=mongodb://event_mongo_dev:27017/event_db_dev?replicaSet=rsEvent
       - AUTH_SERVICE_URL=http://auth_app_dev:5173
+      - GATEWAY_SERVICE_URL=http://gateway_app_dev:4173
+      - GATEWAY_PORT=4173
     depends_on:
       event_mongo_dev_init:
         condition: service_completed_successfully

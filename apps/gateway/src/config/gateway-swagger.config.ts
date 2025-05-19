@@ -1,12 +1,21 @@
 import type { INestApplication } from '@nestjs/common';
 import type { SwaggerCustomOptions } from '@nestjs/swagger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { isProduction } from '@app/common';
 
 /**
  * 게이트웨이용 통합 Swagger UI 설정 함수
  * 각 내부 서비스의 Swagger JSON 명세를 로드하여 UI에서 선택 가능하게 함.
  */
-export const setupGatewayIntegratedSwagger = (app: INestApplication) => {
+export const setupGatewayIntegratedSwagger = (
+  app: INestApplication,
+  configService?: ConfigService,
+) => {
+  if (!configService) {
+    configService = app.get(ConfigService);
+  }
+
   const gatewaySelfApiConfig = new DocumentBuilder()
     .setTitle('API Gateway - Main Entry')
     .setDescription('Aggregated API documentation for all services.')
@@ -22,11 +31,12 @@ export const setupGatewayIntegratedSwagger = (app: INestApplication) => {
       'accessToken',
     )
     .build();
+
   const gatewaySelfDocument = SwaggerModule.createDocument(
     app,
     gatewaySelfApiConfig,
-    {},
   );
+
   const swaggerCustomOptions: SwaggerCustomOptions = {
     explorer: true,
     swaggerOptions: {
@@ -37,11 +47,17 @@ export const setupGatewayIntegratedSwagger = (app: INestApplication) => {
           name: 'Gateway',
         },
         {
-          url: `${process.env.AUTH_SERVICE_URL}/docs-json`,
+          url: isProduction()
+            ? configService.getOrThrow<string>('AUTH_SERVICE_URL') +
+              '/docs-json'
+            : `http://localhost:${configService.getOrThrow<string>('AUTH_PORT')}/docs-json`,
           name: 'Auth Service',
         },
         {
-          url: `${process.env.EVENT_SERVICE_URL}/docs-json`,
+          url: isProduction()
+            ? configService.getOrThrow<string>('EVENT_SERVICE_URL') +
+              '/docs-json'
+            : `http://localhost:${configService.getOrThrow<string>('EVENT_PORT')}/docs-json`,
           name: 'Event Service',
         },
       ],

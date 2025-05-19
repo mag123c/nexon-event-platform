@@ -5,7 +5,7 @@ import {
   setupPipe,
   setupSwagger,
 } from '@app/common';
-import { setupCors } from '@app/common/bootstrap/cors.config';
+import { setupCors } from '@app/common/bootstrap/setup-cors';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 

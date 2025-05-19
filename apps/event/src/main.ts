@@ -7,7 +7,7 @@ import {
   setupSwagger,
 } from '@app/common';
 import { EventAppModule } from '@app/event/event-app.module';
-import { setupCors } from '@app/common/bootstrap/cors.config';
+import { setupCors } from '@app/common/bootstrap/setup-cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(EventAppModule, {
