@@ -9,6 +9,8 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
+import { UserActivityData } from '@app/auth/user/domain/entities/user.entity';
+import { Type } from 'class-transformer';
 
 export class RegisterUserRequestDto {
   @ApiProperty({ example: 'test@example.com', description: '이메일' })
@@ -35,4 +37,16 @@ export class RegisterUserRequestDto {
   @IsArray()
   @IsEnum(Role, { each: true })
   roles?: Role[];
+
+  @ApiPropertyOptional({
+    example: {
+      loginStreakDays: 5,
+      invitedFriendIds: ['friend1', 'friend2'],
+      lastLoginAt: new Date(),
+      joinedAt: new Date(),
+    },
+  })
+  @IsOptional()
+  @Type(() => UserActivityData)
+  userActivity?: UserActivityData;
 }

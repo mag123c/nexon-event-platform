@@ -33,6 +33,7 @@ import { RewardResponseDto } from '@app/event/reward/presentation/dtos/response/
 import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '@app/gateway/auth/guards/jwt.guard';
 import { RolesGuard } from '@app/gateway/auth/guards/role.guard';
+import { createRewardExamples } from '@app/common/swagger/examples/reward.example';
 
 @ApiTags('Gateway - Reward Service Proxy')
 @ApiSecurity(CustomHeaders.INTERNAL_API_KEY)
@@ -65,7 +66,7 @@ export class RewardProxyController {
   @Roles(Role.ADMIN, Role.OPERATOR)
   @ApiOperation({ summary: '이벤트에 보상 생성 (운영자/관리자)' })
   @ApiBearerAuth('accessToken')
-  @ApiBody({ type: CreateRewardRequestDto })
+  @ApiBody({ type: CreateRewardRequestDto, examples: createRewardExamples })
   @ApiCreatedResponse({
     description: '보상 생성 성공',
     type: RewardResponseDto,

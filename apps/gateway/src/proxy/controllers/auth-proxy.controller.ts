@@ -2,6 +2,10 @@ import { LoginRequestDto } from '@app/auth/presentation/dtos/request/login-user.
 import { RegisterUserRequestDto } from '@app/auth/presentation/dtos/request/register-user.request.dto';
 import { JwtResponseDto } from '@app/auth/presentation/dtos/response/jwt.response.dto';
 import { UserResponseDto } from '@app/auth/presentation/dtos/response/user.response.dto';
+import {
+  loginUserExamples,
+  registerUserExamples,
+} from '@app/common/swagger/examples/auth.examples';
 import gatewayConfig from '@app/gateway/config/gateway-proxy.config';
 import {
   ProxyRequestOptions,
@@ -55,7 +59,7 @@ export class AuthProxyController {
     summary: '회원가입',
     description: '회원가입 및 로그인은 모든 사용자에게 공개됩니다.',
   })
-  @ApiBody({ type: RegisterUserRequestDto })
+  @ApiBody({ type: RegisterUserRequestDto, examples: registerUserExamples })
   @ApiCreatedResponse({
     description: '회원가입 성공',
     type: UserResponseDto,
@@ -82,7 +86,7 @@ export class AuthProxyController {
     summary: '로그인',
     description: '로그인은 모든 사용자에게 공개됩니다.',
   })
-  @ApiBody({ type: LoginRequestDto })
+  @ApiBody({ type: LoginRequestDto, examples: loginUserExamples })
   @ApiOkResponse({
     type: JwtResponseDto,
   })

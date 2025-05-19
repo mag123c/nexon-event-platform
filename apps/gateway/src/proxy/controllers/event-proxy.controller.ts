@@ -35,6 +35,7 @@ import { EventResponseDto } from '@app/event/event-core/presentation/dtos/respon
 import { EventStatus } from '@app/event/event-core/domain/value-objects/event-status.vo';
 import { PaginatedEventsResponseDto } from '@app/event/event-core/presentation/dtos/response/paginated-events.response.dto';
 import { EventDetailResponseDto } from '@app/event/event-core/presentation/dtos/response/event-detail.response.dto';
+import { createEventExamples } from '@app/common/swagger/examples/event.example';
 
 @ApiTags('Gateway - Event Service Proxy')
 @Controller('events')
@@ -66,7 +67,7 @@ export class EventProxyController {
   @Roles(Role.OPERATOR, Role.ADMIN)
   @ApiOperation({ summary: '이벤트 생성 (운영자/관리자)' })
   @ApiBearerAuth('accessToken')
-  @ApiBody({ type: CreateEventRequestDto })
+  @ApiBody({ type: CreateEventRequestDto, examples: createEventExamples })
   @ApiCreatedResponse({
     type: EventResponseDto,
   })

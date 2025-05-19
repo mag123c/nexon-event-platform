@@ -32,6 +32,7 @@ import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
 import { InternalUserContext } from '@app/common/interfaces/internal-user-context.interface';
 import { RolesGuard } from '@app/gateway/auth/guards/role.guard';
+import { createRewardExamples } from '@app/common/swagger/examples/reward.example';
 
 @ApiTags('Event - Rewards')
 @ApiSecurity('x-internal-api-key')
@@ -50,7 +51,7 @@ export class RewardController {
   @ApiSecurity('x-user-id')
   @ApiSecurity('x-user-roles')
   @ApiOperation({ summary: '이벤트에 보상 생성' })
-  @ApiBody({ type: CreateRewardRequestDto })
+  @ApiBody({ type: CreateRewardRequestDto, examples: createRewardExamples })
   @ApiCreatedResponse({
     description: '보상 생성 성공',
     type: RewardResponseDto,

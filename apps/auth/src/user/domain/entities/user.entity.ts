@@ -1,14 +1,20 @@
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
 import { Document, Types } from 'mongoose';
 
 export class UserActivityData {
+  @IsNumber()
   @Prop({ type: Number, default: 0 })
   loginStreakDays?: number;
+  @IsArray()
+  @IsString({ each: true })
   @Prop({ type: [String], default: [] })
   invitedFriendIds?: string[];
+  @IsDate()
   @Prop({ type: Date })
   lastLoginAt?: Date;
+  @IsDate()
   @Prop({ type: Date })
   joinedAt?: Date;
 }

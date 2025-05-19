@@ -35,6 +35,7 @@ import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
 import { InternalUserContext } from '@app/common/interfaces/internal-user-context.interface';
+import { createEventExamples } from '@app/common/swagger/examples/event.example';
 
 @ApiTags('Event')
 @ApiSecurity('x-internal-api-key')
@@ -53,7 +54,7 @@ export class EventController {
   @ApiSecurity('x-user-id')
   @ApiSecurity('x-user-roles')
   @ApiOperation({ summary: '이벤트 생성' })
-  @ApiBody({ type: CreateEventRequestDto })
+  @ApiBody({ type: CreateEventRequestDto, examples: createEventExamples })
   @ApiCreatedResponse({
     type: EventResponseDto,
   })

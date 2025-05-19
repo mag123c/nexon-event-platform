@@ -19,6 +19,10 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
+import {
+  loginUserExamples,
+  registerUserExamples,
+} from '@app/common/swagger/examples/auth.examples';
 
 @ApiTags('Auth')
 @ApiSecurity('x-internal-api-key')
@@ -33,7 +37,7 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: '회원가입' })
-  @ApiBody({ type: RegisterUserRequestDto })
+  @ApiBody({ type: RegisterUserRequestDto, examples: registerUserExamples })
   @ApiCreatedResponse({
     description: '회원가입 성공',
     type: UserResponseDto,
@@ -53,6 +57,7 @@ export class AuthController {
       email: registerUserRequestDto.email,
       password: registerUserRequestDto.password,
       roles: registerUserRequestDto.roles,
+      userActivity: registerUserRequestDto.userActivity,
     };
 
     const createdUserEntity: User =
@@ -64,7 +69,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Log in a user' })
-  @ApiBody({ type: LoginRequestDto })
+  @ApiBody({ type: LoginRequestDto, examples: loginUserExamples })
   @ApiOkResponse({
     type: JwtResponseDto,
   })
