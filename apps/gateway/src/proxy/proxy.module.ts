@@ -5,6 +5,10 @@ import gatewayConfig from '../config/gateway-proxy.config';
 
 import { ProxyRequestService } from './services/proxy-request.service';
 import { AuthProxyController } from '@app/gateway/proxy/controllers/auth-proxy.controller';
+import { RewardProxyController } from '@app/gateway/proxy/controllers/reward-proxy.controller';
+import { EventClaimProxyController } from '@app/gateway/proxy/controllers/event-claim-proxy.contorller';
+import { EventProxyController } from '@app/gateway/proxy/controllers/event-proxy.controller';
+import { UserProxyController } from '@app/gateway/proxy/controllers/user-proxy.controller';
 
 @Module({
   imports: [
@@ -16,6 +20,12 @@ import { AuthProxyController } from '@app/gateway/proxy/controllers/auth-proxy.c
   ],
   providers: [ProxyRequestService],
   exports: [ProxyRequestService],
-  controllers: [AuthProxyController],
+  controllers: [
+    AuthProxyController,
+    EventProxyController,
+    EventClaimProxyController,
+    RewardProxyController,
+    UserProxyController,
+  ],
 })
 export class ProxyModule {}

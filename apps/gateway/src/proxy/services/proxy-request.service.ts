@@ -14,6 +14,11 @@ import {
   ServiceUnavailableProxyException,
 } from '@app/gateway/shared/errors/proxy.exception';
 
+export interface ProxyRequestOptions {
+  stripPrefix?: string;
+  injectUserInfo?: boolean;
+}
+
 @Injectable()
 export class ProxyRequestService {
   private readonly logger = new Logger(ProxyRequestService.name);
@@ -36,10 +41,7 @@ export class ProxyRequestService {
   async forwardRequest(
     req: Request,
     targetBaseUrl: string,
-    options?: {
-      stripPrefix?: string;
-      injectUserInfo?: boolean;
-    },
+    options?: ProxyRequestOptions,
   ): Promise<AxiosResponse<any, any>> {
     const { method, body, headers: originalHeaders, originalUrl } = req;
     const user = req.user as JwtPayload | undefined;
@@ -62,6 +64,8 @@ export class ProxyRequestService {
     if (originalHeaders['accept']) {
       headersToForward['accept'] = originalHeaders['accept'] as string;
     }
+
+    // JWT 토큰을 포함한 Authorization 헤더를 전달
     if (options?.injectUserInfo && user) {
       if (user.id) headersToForward[CustomHeaders.USER_ID] = user.id;
       if (user.roles && user.roles.length > 0) {
