@@ -20,11 +20,10 @@ import { User } from '@app/auth/user/domain/entities/user.entity';
 export class UserController {
   constructor(private readonly getUserUseCase: GetUserUseCase) {}
 
-  @Get('activity-data')
+  @Get(':userId/activity-data')
   @ApiOperation({ summary: '특정 유저의 활동 데이터 조회 (내부 서비스용)' })
   @ApiParam({
     name: 'userId',
-    description: '조회할 유저의 ID (ObjectId string)',
     type: String,
   })
   @ApiOkResponse({

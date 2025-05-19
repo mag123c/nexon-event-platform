@@ -10,6 +10,7 @@ import {
 import { Injectable, Inject } from '@nestjs/common';
 import { DatabaseOperationException } from '@app/common/errors/database-operation.exception';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
+import { isProduction } from '@app/common';
 
 @Injectable()
 export class RegisterUserUseCase {
@@ -39,6 +40,9 @@ export class RegisterUserUseCase {
     newUser.password = hashedPassword;
     newUser.roles =
       input.roles && input.roles.length > 0 ? input.roles : [Role.USER];
+
+    // 과제 테스트용
+    if (!isProduction()) newUser.activityData = input.userActivity;
 
     try {
       return await this.userRepository.save(newUser);

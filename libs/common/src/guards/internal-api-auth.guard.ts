@@ -72,11 +72,15 @@ export class InternalApiAuthGuard implements CanActivate {
     if (userId) {
       let roles: Role[] = [];
       if (rolesHeader && typeof rolesHeader === 'string') {
-        roles = rolesHeader
-          .split(',')
-          .map((role) => role.trim().toUpperCase() as Role);
-      } else if (rolesHeader && Array.isArray(rolesHeader)) {
-        roles = rolesHeader.map((role) => role.trim().toUpperCase() as Role);
+        try {
+          if (rolesHeader.startsWith('[')) {
+            roles = JSON.parse(rolesHeader);
+          } else {
+            roles = rolesHeader.split(',').map((r) => r.trim()) as Role[];
+          }
+        } catch {
+          roles = [];
+        }
       }
       request.user = { id: userId, roles: roles };
     } else {

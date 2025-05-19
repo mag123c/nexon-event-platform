@@ -95,10 +95,14 @@ export class EventClaimMongoRepository implements EventClaimRepository {
     const query: FilterQuery<EventClaimDocument> = {};
 
     if (criteria.userId) {
-      query.userId = new Types.ObjectId(criteria.userId.toString());
+      query.userId = Types.ObjectId.isValid(criteria.userId)
+        ? new Types.ObjectId(criteria.userId)
+        : criteria.userId;
     }
     if (criteria.eventId) {
-      query.eventId = new Types.ObjectId(criteria.eventId.toString());
+      query.eventId = Types.ObjectId.isValid(criteria.eventId)
+        ? new Types.ObjectId(criteria.eventId)
+        : criteria.eventId;
     }
     if (criteria.status) {
       query.status = criteria.status;

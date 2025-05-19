@@ -24,6 +24,7 @@ import {
   ApiResponse,
   ApiQuery,
   ApiOkResponse,
+  ApiParam,
 } from '@nestjs/swagger';
 import gatewayConfig from '@app/gateway/config/gateway-proxy.config';
 import { Request, Response } from 'express';
@@ -65,6 +66,11 @@ export class RewardProxyController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.OPERATOR)
   @ApiOperation({ summary: '이벤트에 보상 생성 (운영자/관리자)' })
+  @ApiParam({
+    name: 'eventId',
+    type: String,
+    description: '이벤트 ID',
+  })
   @ApiBearerAuth('accessToken')
   @ApiBody({ type: CreateRewardRequestDto, examples: createRewardExamples })
   @ApiCreatedResponse({

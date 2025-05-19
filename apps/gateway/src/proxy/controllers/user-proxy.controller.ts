@@ -24,6 +24,9 @@ import {
 import gatewayConfig from '@app/gateway/config/gateway-proxy.config';
 import { Request, Response } from 'express';
 import { UserActivityResponseDto } from '@app/auth/user/presentation/dtos/response/user-activity.response.dto';
+import { RolesGuard } from '@app/gateway/auth/guards/role.guard';
+import { Role } from '@app/auth/domain/value-objects/role.vo';
+import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
 
 @ApiTags('Gateway - Auth Service Proxy')
 @ApiBearerAuth('accessToken')
@@ -51,12 +54,12 @@ export class UserProxyController {
     res.status(serviceResponse.status).json(serviceResponse.data);
   }
 
+  @Get(':userId/activity-data')
   @ApiOperation({
     summary: '특정 유저의 활동 데이터 조회',
   })
   @ApiParam({
     name: 'userId',
-    description: '조회할 유저의 ID (ObjectId string)',
     type: String,
   })
   @ApiOkResponse({
@@ -70,8 +73,8 @@ export class UserProxyController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'API 키 인증 실패',
   })
-  @UseGuards(JwtAuthGuard)
-  @Get(':userId/activity-data')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.USER)
   async getUserActivityData(@Req() req: Request, @Res() res: Response) {
     await this.handleUserProxy(req, res, { injectUserInfo: false });
   }

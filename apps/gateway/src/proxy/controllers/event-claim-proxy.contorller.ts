@@ -25,11 +25,14 @@ import {
   ApiParam,
   ApiResponse,
   ApiOkResponse,
+  ApiQuery,
 } from '@nestjs/swagger';
 import gatewayConfig from '@app/gateway/config/gateway-proxy.config';
 import { Request, Response } from 'express';
 import { ClaimRewardResponseDto } from '@app/event/event-claim/presentation/dtos/response/event-claim.response.dto';
 import { PaginatedEventClaimsResponseDto } from '@app/event/event-claim/presentation/dtos/response/paginated-event-claims.response.dto';
+import { ListAllEventClaimsQueryDto } from '@app/event/event-claim/presentation/dtos/request/list-all-event-claims.query.dto';
+import { ListMyEventClaimsQueryDto } from '@app/event/event-claim/presentation/dtos/request/list-my-event-claims.query.dto';
 
 @ApiTags('Gateway - Event Claim Service Proxy')
 @Controller('claims')
@@ -99,6 +102,7 @@ export class EventClaimProxyController {
   @Get('me')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.USER)
+  @ApiQuery({ type: ListMyEventClaimsQueryDto })
   @ApiOperation({ summary: '내 보상 요청 이력 조회' })
   @ApiBearerAuth('accessToken')
   @ApiOkResponse({
@@ -124,6 +128,7 @@ export class EventClaimProxyController {
     summary: '전체 또는 필터링된 보상 요청 이력 조회 (관리자용)',
   })
   @ApiBearerAuth('accessToken')
+  @ApiQuery({ type: ListAllEventClaimsQueryDto })
   @ApiOkResponse({
     description: '보상 요청 이력 조회 성공',
     type: PaginatedEventClaimsResponseDto,

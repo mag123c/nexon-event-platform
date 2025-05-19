@@ -3,17 +3,22 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
 import { Document, Types } from 'mongoose';
 
+@Schema({ _id: false })
 export class UserActivityData {
+  // 로그인 연속 일수
   @IsNumber()
   @Prop({ type: Number, default: 0 })
   loginStreakDays?: number;
+
   @IsArray()
   @IsString({ each: true })
   @Prop({ type: [String], default: [] })
   invitedFriendIds?: string[];
+
   @IsDate()
   @Prop({ type: Date })
   lastLoginAt?: Date;
+
   @IsDate()
   @Prop({ type: Date })
   joinedAt?: Date;

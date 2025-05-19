@@ -62,7 +62,7 @@ export class EventProxyController {
     res.status(serviceResponse.status).json(serviceResponse.data);
   }
 
-  @Post('create')
+  @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.OPERATOR, Role.ADMIN)
   @ApiOperation({ summary: '이벤트 생성 (운영자/관리자)' })
@@ -111,7 +111,6 @@ export class EventProxyController {
   }
 
   @Get(':eventId')
-  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '이벤트 상세 조회',
     description: '이벤트 상세 정보는 모든 사용자에게 공개됩니다.',

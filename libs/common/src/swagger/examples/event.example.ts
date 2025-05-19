@@ -18,12 +18,12 @@ export const createEventExamples: Record<string, ApiExample> = {
     value: {
       name: '매일매일 연속 출석 이벤트!',
       description: '연속으로 로그인하고 푸짐한 보상을 받아가세요!',
-      startDate: new Date().toISOString(),
+      startDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
       endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       status: EventStatus.ACTIVE,
       condition: {
         category: EventConditionCategory.USER_ACTIVITY,
-        type: 'CONSECUTIVE_LOGIN_DAYS',
+        type: 'LOGIN_STREAK_DAYS',
         operator: EventConditionOperator.GREATER_THAN_OR_EQUAL,
         value: 7,
         unit: '일',
@@ -37,9 +37,9 @@ export const createEventExamples: Record<string, ApiExample> = {
     value: {
       name: '친구야, 같이하자! 100명 초대 챌린지!',
       description: '친구를 100명 이상 초대하면 엄청난 보상이!',
-      startDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+      startDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
       endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
-      status: EventStatus.SCHEDULED,
+      status: EventStatus.ACTIVE,
       condition: {
         category: EventConditionCategory.USER_ACTIVITY,
         type: 'INVITED_FRIENDS_COUNT',

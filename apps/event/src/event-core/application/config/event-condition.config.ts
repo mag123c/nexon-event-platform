@@ -7,8 +7,7 @@ import { EventConditionCategory } from '@app/event/event-core/domain/value-objec
  */
 export const SUPPORTED_EVENT_TYPES: Record<EventConditionCategory, string[]> = {
   [EventConditionCategory.USER_ACTIVITY]: [
-    'LOGIN_STREAK_DAYS', // 로그인 횟수
-    'CONSECUTIVE_LOGIN_DAYS', // 연속 로그인 일수
+    'LOGIN_STREAK_DAYS', // 연속 로그인 일수
     'LAST_LOGIN_AT', // 마지막 로그인 날짜
     'INVITED_FRIENDS_COUNT', // 초대한 친구 수
   ],

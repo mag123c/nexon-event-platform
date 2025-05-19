@@ -11,6 +11,7 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -36,6 +37,7 @@ import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
 import { InternalUserContext } from '@app/common/interfaces/internal-user-context.interface';
 import { createEventExamples } from '@app/common/swagger/examples/event.example';
+import { RolesGuard } from '@app/gateway/auth/guards/role.guard';
 
 @ApiTags('Event')
 @ApiSecurity('x-internal-api-key')
@@ -50,6 +52,7 @@ export class EventController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(RolesGuard)
   @Roles(Role.ADMIN, Role.OPERATOR)
   @ApiSecurity('x-user-id')
   @ApiSecurity('x-user-roles')
