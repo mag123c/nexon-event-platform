@@ -46,8 +46,11 @@ export class EventClaimController {
   ) {}
 
   @Post(':eventId')
+  @UseGuards(RolesGuard)
   @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.USER)
   @ApiSecurity('x-user-id')
+  @ApiSecurity('x-user-roles')
   @ApiOperation({ summary: '이벤트 보상 요청' })
   @ApiParam({ name: 'eventId', description: '이벤트 ID', type: String })
   @ApiCreatedResponse({

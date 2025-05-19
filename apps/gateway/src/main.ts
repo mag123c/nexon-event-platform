@@ -2,9 +2,9 @@ import {
   HttpExceptionFilter,
   LoggingInterceptor,
   setupPipe,
-  setupSwagger,
 } from '@app/common';
 import { AppModule } from '@app/gateway/app.module';
+import { setupGatewayIntegratedSwagger } from '@app/gateway/config/gateway-swagger.config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
   setupPipe(app);
-  setupSwagger(app, 'Gateway API Server', 'gateway');
+  setupGatewayIntegratedSwagger(app);
 
   await app.listen(port, () => {
     console.log(`Gateway API Server is running on: ${port}`);

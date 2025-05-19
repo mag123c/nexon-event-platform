@@ -3,7 +3,6 @@ import {
   ProxyRequestService,
   ProxyRequestOptions,
 } from '@app/gateway/proxy/services/proxy-request.service';
-import { CustomHeaders } from '@app/gateway/shared/constants/headers.constants';
 import {
   Controller,
   Inject,
@@ -16,7 +15,6 @@ import {
 import { ConfigType } from '@nestjs/config';
 import {
   ApiTags,
-  ApiSecurity,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -25,8 +23,8 @@ import {
 import gatewayConfig from '@app/gateway/config/gateway-proxy.config';
 import { Request, Response } from 'express';
 
-@ApiTags('Gateway - User Service Proxy (via Auth Service)')
-@ApiSecurity(CustomHeaders.INTERNAL_API_KEY)
+@ApiTags('Gateway - Auth Service Proxy')
+@ApiBearerAuth('accessToken')
 @Controller('users')
 export class UserProxyController {
   constructor(
@@ -52,8 +50,7 @@ export class UserProxyController {
   }
 
   @ApiOperation({
-    summary:
-      '특정 유저의 활동 데이터 조회 (내부 서비스 간 호출용이므로 게이트웨이에선 신중히 노출)',
+    summary: '특정 유저의 활동 데이터 조회',
   })
   @ApiParam({
     name: 'userId',
@@ -74,7 +71,6 @@ export class UserProxyController {
     description: '인증/인가 실패 (게이트웨이 또는 Auth 서버)',
   })
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('accessToken')
   @Get(':userId/activity-data')
   async getUserActivityData(@Req() req: Request, @Res() res: Response) {
     await this.handleUserProxy(req, res, { injectUserInfo: false });

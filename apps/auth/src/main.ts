@@ -5,6 +5,7 @@ import {
   setupPipe,
   setupSwagger,
 } from '@app/common';
+import { setupCors } from '@app/common/bootstrap/cors.config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
@@ -18,8 +19,9 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  setupCors(app);
   setupPipe(app);
-  setupSwagger(app, 'Auth API Server', 'auth');
+  setupSwagger(app, 'Auth API', 'auth');
 
   await app.listen(port, () => {
     console.log(`Auth API Server is running on: ${port}`);

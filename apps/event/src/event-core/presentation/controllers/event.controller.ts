@@ -50,6 +50,7 @@ export class EventController {
   @HttpCode(HttpStatus.CREATED)
   @Roles(Role.ADMIN, Role.OPERATOR)
   @ApiSecurity('x-user-id')
+  @ApiSecurity('x-user-roles')
   @ApiOperation({ summary: '이벤트 생성' })
   @ApiBody({ type: CreateEventRequestDto })
   @ApiCreatedResponse({

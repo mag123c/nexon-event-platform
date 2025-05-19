@@ -10,6 +10,7 @@ import {
   Body,
   Get,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 
 import { CreateRewardRequestDto } from '@app/event/reward/presentation/dtos/request/reward.request.dto';
@@ -29,6 +30,7 @@ import { Roles } from '@app/gateway/auth/decorators/roles.decorator';
 import { Role } from '@app/auth/domain/value-objects/role.vo';
 import { CurrentUser } from '@app/gateway/auth/decorators/current-user.decorator';
 import { InternalUserContext } from '@app/common/interfaces/internal-user-context.interface';
+import { RolesGuard } from '@app/gateway/auth/guards/role.guard';
 
 @ApiTags('Event - Rewards')
 @ApiSecurity('x-internal-api-key')
@@ -42,8 +44,10 @@ export class RewardController {
 
   @Post(':eventId')
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(RolesGuard)
   @Roles(Role.ADMIN, Role.OPERATOR)
   @ApiSecurity('x-user-id')
+  @ApiSecurity('x-user-roles')
   @ApiOperation({ summary: '이벤트에 보상 생성' })
   @ApiBody({ type: CreateRewardRequestDto })
   @ApiCreatedResponse({

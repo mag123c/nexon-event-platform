@@ -7,6 +7,7 @@ import {
   setupSwagger,
 } from '@app/common';
 import { EventAppModule } from '@app/event/event-app.module';
+import { setupCors } from '@app/common/bootstrap/cors.config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(EventAppModule, {
@@ -18,6 +19,8 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.enableCors();
+  setupCors(app);
   setupPipe(app);
   setupSwagger(app, 'Event API', 'event');
 
