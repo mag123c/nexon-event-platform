@@ -1,0 +1,34 @@
+services:
+  auth_mongo_test:
+    image: mongo:latest
+    container_name: auth_mongo_test
+    hostname: auth_mongo_test
+    ports:
+      - '27117:27017'
+    volumes:
+      - auth_mongo_test_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: auth_db_test
+    networks:
+      - dev_network
+
+  event_mongo_test:
+    image: mongo:latest
+    container_name: event_mongo_test
+    hostname: event_mongo_test
+    ports:
+      - '27118:27017'
+    volumes:
+      - event_mongo_test_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: event_db_test
+    networks:
+      - dev_network
+
+volumes:
+  auth_mongo_test_data:
+  event_mongo_test_data:
+
+networks:
+  dev_network:
+    driver: bridge
