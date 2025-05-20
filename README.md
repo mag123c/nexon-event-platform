@@ -1,5 +1,25 @@
 ### ▶️ 실행 방법
-- docker compose up -d
+
+싫랭:
+```
+docker compose up -d
+```
+- Gateway: http://localhost:4173
+- Auth: http://localhost:5173
+- Event: http://localhost:6173
+
+테스트:
+```
+docker compose -f docker-compose-test-mongo.yml up -d
+npm install
+npm run test
+```
+
+API Docs (Swagger)
+- Gateway: http://localhost:4173/docs
+
+> Gateway Swagger에서 각 마이크로 서버의 API Doc(JSON)을 통해 내부 스웨거 UI를 확인할 수 있는 형태로 구성되어 있습니다.
+
 
 
 ### 📄 각종 문서
